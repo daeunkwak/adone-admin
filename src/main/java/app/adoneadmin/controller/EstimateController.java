@@ -22,12 +22,12 @@ import java.util.List;
 @Slf4j
 public class EstimateController {
 
-    @Tag(name = "estimates")
-    @ApiOperation(value = "견적 리스트 조회 api")
-    @GetMapping(value="")
-    public ResponseEntity<EstimateResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
-    ){
-        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-        return ResponseEntity.ok(new MemberResponseDto.GroupById(noticeResponseDtos));
-    }
+//    @Tag(name = "estimates")
+//    @ApiOperation(value = "견적 리스트 조회 api")
+//    @GetMapping(value="")
+//    public ResponseEntity<EstimateResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
+//    ){
+//        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
+//        return ResponseEntity.ok(new MemberResponseDto.GroupById(noticeResponseDtos));
+//    }
 }

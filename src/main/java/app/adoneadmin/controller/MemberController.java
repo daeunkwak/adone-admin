@@ -24,13 +24,13 @@ import java.util.List;
 @Slf4j
 public class MemberController {
 
-    @Tag(name = "members")
-    @ApiOperation(value = "회원 리스트 조회 api")
-    @GetMapping(value="")
-    public ResponseEntity<MemberResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
-                                                                     ){
-        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-        return ResponseEntity.ok(new MemberResponseDto.GroupById(noticeResponseDtos));
-    }
+//    @Tag(name = "members")
+//    @ApiOperation(value = "회원 리스트 조회 api")
+//    @GetMapping(value="")
+//    public ResponseEntity<MemberResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
+//                                                                     ){
+//        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
+//        return ResponseEntity.ok(new MemberResponseDto.GroupById(noticeResponseDtos));
+//    }
 
 }

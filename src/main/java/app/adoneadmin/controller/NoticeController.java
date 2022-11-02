@@ -24,33 +24,33 @@ import java.util.List;
 @Slf4j
 public class NoticeController {
 
-    @Tag(name = "notice")
-    @ApiOperation(value = "공지사항 생성 api")
-    @PostMapping(value="")
-    public ResponseEntity<NoticeCreateResponseDto> createNotice(//@ApiIgnore @PrincipalDetail Long memberId,
-                                                                @RequestBody @Valid NoticeCreateRequestDto req){
-
-        //return ResponseEntity.ok(NoticeCreateResponseDto.create(noticeId), HttpStatus.CREATED);
-        return new ResponseEntity<>(NoticeCreateResponseDto.create(1L), HttpStatus.CREATED);
-    }
-
-    @Tag(name = "notice")
-    @ApiOperation(value = "공지사항 리스트 조회 api")
-    @GetMapping(value="")
-    public ResponseEntity<NoticeResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
-                                                                    @RequestBody @Valid NoticeCreateResponseDto req){
-        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-        return ResponseEntity.ok(new NoticeResponseDto.GroupById(noticeResponseDtos));
-    }
-
-    @Tag(name = "notice")
-    @ApiOperation(value = "공지사항 단건 조회 api")
-    @GetMapping(value="/{noticeId}")
-    public ResponseEntity<NoticeResponseDto> getNotice(// @ApiIgnore @PrincipalDetail Long memberId,
-                                                                 @PathVariable("noticeId") Long noticeId){
-        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-        return ResponseEntity.ok(NoticeResponseDto.from(notice));
-    }
+//    @Tag(name = "notice")
+//    @ApiOperation(value = "공지사항 생성 api")
+//    @PostMapping(value="")
+//    public ResponseEntity<NoticeCreateResponseDto> createNotice(//@ApiIgnore @PrincipalDetail Long memberId,
+//                                                                @RequestBody @Valid NoticeCreateRequestDto req){
+//
+//        //return ResponseEntity.ok(NoticeCreateResponseDto.create(noticeId), HttpStatus.CREATED);
+//        return new ResponseEntity<>(NoticeCreateResponseDto.create(1L), HttpStatus.CREATED);
+//    }
+//
+//    @Tag(name = "notice")
+//    @ApiOperation(value = "공지사항 리스트 조회 api")
+//    @GetMapping(value="")
+//    public ResponseEntity<NoticeResponseDto.GroupById> getAllNotice(// @ApiIgnore @PrincipalDetail Long memberId,
+//                                                                    @RequestBody @Valid NoticeCreateResponseDto req){
+//        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
+//        return ResponseEntity.ok(new NoticeResponseDto.GroupById(noticeResponseDtos));
+//    }
+//
+//    @Tag(name = "notice")
+//    @ApiOperation(value = "공지사항 단건 조회 api")
+//    @GetMapping(value="/{noticeId}")
+//    public ResponseEntity<NoticeResponseDto> getNotice(// @ApiIgnore @PrincipalDetail Long memberId,
+//                                                                 @PathVariable("noticeId") Long noticeId){
+//        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
+//        return ResponseEntity.ok(NoticeResponseDto.from(notice));
+//    }
 
     // 공지사항 검색 NoticeResponseDto
 
