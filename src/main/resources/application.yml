@@ -1,0 +1,55 @@
+
+spring:
+  config:
+    activate:
+      on-profile: ["local", "real"]
+
+  datasource:
+    url: ${DATABASE_URL}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+  mvc:
+    pathmatch:
+      # swagger
+      matching-strategy: ant_path_matcher
+
+server:
+  port: ${PORT:8080}
+  error:
+    whitelabel:
+      enabled: false
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: ["local"]
+
+swagger:
+  url: http://localhost:8080
+  desc: for local usages
+
+---
+
+
+spring:
+  config:
+    activate:
+      on-profile: ["real"]
+
+swagger:
+  url: http://adoneadmin-env.eba-g7x6pjva.ap-northeast-2.elasticbeanstalk.com:8080
+  desc: for real usages
+  documentation:
+    enabled: true
