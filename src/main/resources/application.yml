@@ -49,7 +49,7 @@ spring:
       on-profile: ["real"]
 
 swagger:
-  url: http://adoneadmin-env.eba-g7x6pjva.ap-northeast-2.elasticbeanstalk.com:8080
+  url: ${ADMIN_SWAGGER_URL}
   desc: for real usages
   documentation:
     enabled: true
