@@ -40,7 +40,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
         aws-region: ap-northeast-2
         secrets: |
-          /secret/clelab
+          /secret/adone
         parse-json: false # AWS secret manager
 
     - name: Grant execute permission for gradlew
