@@ -3,7 +3,7 @@ package app.adoneadmin;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class AdoneAdminApplicationTests {
 
     @Test

@@ -29,6 +29,16 @@ server:
     whitelabel:
       enabled: false
 
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+
 ---
 
 spring:
@@ -49,7 +59,7 @@ spring:
       on-profile: ["real"]
 
 swagger:
-  url: http://adoneadmin-env.eba-g7x6pjva.ap-northeast-2.elasticbeanstalk.com:8080
+  url: ${ADMIN_SWAGGER_URL}
   desc: for real usages
   documentation:
     enabled: true
