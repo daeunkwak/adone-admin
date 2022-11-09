@@ -8,8 +8,9 @@
 name: real-adone-admin
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
