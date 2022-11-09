@@ -33,6 +33,7 @@ public class SwaggerConfig{
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
+                .consumes(getConsumeContentTypes())
                 .useDefaultResponseMessages(false)
                 .securityContexts(List.of(securityContext()))
                 .securitySchemes(List.of(apiKey()))
@@ -42,6 +43,13 @@ public class SwaggerConfig{
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
                 .build();
+    }
+
+    private Set<String> getConsumeContentTypes() {
+        Set<String> consumes = new HashSet<>();
+        consumes.add("application/json;charset=UTF-8");
+        consumes.add("application/x-www-form-urlencoded");
+        return consumes;
     }
 
     private SecurityContext securityContext() {

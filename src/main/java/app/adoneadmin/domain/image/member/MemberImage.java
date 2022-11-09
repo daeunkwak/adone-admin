@@ -10,8 +10,6 @@ import javax.persistence.*;
 @ToString(exclude = {"member"})
 @DiscriminatorValue("member")
 @Entity
-@Builder
-@AllArgsConstructor
 public class MemberImage extends Image {
 
     @OneToOne(fetch = FetchType.LAZY)

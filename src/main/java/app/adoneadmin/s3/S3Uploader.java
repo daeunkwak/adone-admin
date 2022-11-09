@@ -25,7 +25,6 @@ public class S3Uploader {
 
     @Value("${BUCKET_NAME}")
     private String bucket;
-
     private final AmazonS3 amazonS3;
 
     /**
@@ -35,6 +34,21 @@ public class S3Uploader {
 
         //폴더 경로
         String folderPath = "contractor";
+
+        //파일 이름
+        String frontName = String.valueOf(member.getMemberId());
+        String fileName = createFileName(frontName, multipartFile.getOriginalFilename());
+
+        return s3Upload(folderPath, fileName, multipartFile);
+    }
+
+    /**
+     * 시공사 사업 등록증 이미지 업로드
+     */
+    public String s3UploadOfCompanyRegisterImage(Member member, MultipartFile multipartFile) throws IOException {
+
+        //폴더 경로
+        String folderPath = "companyRegister";
 
         //파일 이름
         String frontName = String.valueOf(member.getMemberId());

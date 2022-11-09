@@ -8,6 +8,7 @@ import app.adoneadmin.repository.member.MemberRepository;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import app.adoneadmin.vo.member.MemberUpdateVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -76,32 +78,14 @@ public class MemberService {
     public Member updateMemberInfo(MemberUpdateVo memberUpdateVo, Long memberId) {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다."));
+
         member.setCompanyName(memberUpdateVo.getCompanyName());
         member.setRepresentName(memberUpdateVo.getRepresentName());
         member.setFullAddress(memberUpdateVo.getFullAddress());
         member.setRepresentPhone(memberUpdateVo.getRepresentPhone());
-
-        memberRepository.save(member);
-        return member;
+        return memberRepository.save(member);
     }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

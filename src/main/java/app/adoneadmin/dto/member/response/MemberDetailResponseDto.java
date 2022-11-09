@@ -1,5 +1,6 @@
 package app.adoneadmin.dto.member.response;
 
+import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.dto.image.ImageDto;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import io.swagger.annotations.ApiModel;
@@ -39,21 +40,34 @@ public class MemberDetailResponseDto {
     private ImageDto companyRegisterImageDto;
 
     @ApiModelProperty(value = "시공사 대표 이미지")
-    private ImageDto constructorImageDto;
+    private ImageDto memberImageDto;
 
-    public static MemberDetailResponseDto from(MemberDetailResponseVo memberDetailResponseVo){
-        return new MemberDetailResponseDtoBuilder()
-                .memberId(memberDetailResponseVo.getMember().getMemberId())
-                .companyName(memberDetailResponseVo.getMember().getCompanyName())
-                .representName(memberDetailResponseVo.getMember().getRepresentName())
-                .companyRegisterNumber(memberDetailResponseVo.getMember().getCompanyRegistrationNumber())
-                .representPhone(memberDetailResponseVo.getMember().getRepresentPhone())
-                .fullAddress(memberDetailResponseVo.getMember().getFullAddress())
-                .isAuthorized(memberDetailResponseVo.getMember().getIsAuthorized())
-               // .companyRegisterImageDto(memberDetailResponseVo.getCompanyRegisterImage())
-                //.constructorImageDto(memberDetailResponseVo.getMemberImage())
-                .build();
+    public MemberDetailResponseDto(Member member, ImageDto memberImageDto, ImageDto companyRegisterImageDto){
+        this.memberId = member.getMemberId();
+        this.companyName = member.getCompanyName();
+        this.representName = member.getRepresentName();
+        this.companyRegisterNumber = member.getCompanyRegistrationNumber();
+        this.representPhone = member.getPhone();
+        this.fullAddress = member.getFullAddress();
+        this.isAuthorized = member.getIsAuthorized();
+        this.companyRegisterImageDto = companyRegisterImageDto;
+        this.memberImageDto = memberImageDto;
+
     }
+
+//    public static MemberDetailResponseDto from(MemberDetailResponseVo memberDetailResponseVo){
+//        return new MemberDetailResponseDtoBuilder()
+//                .memberId(memberDetailResponseVo.getMember().getMemberId())
+//                .companyName(memberDetailResponseVo.getMember().getCompanyName())
+//                .representName(memberDetailResponseVo.getMember().getRepresentName())
+//                .companyRegisterNumber(memberDetailResponseVo.getMember().getCompanyRegistrationNumber())
+//                .representPhone(memberDetailResponseVo.getMember().getRepresentPhone())
+//                .fullAddress(memberDetailResponseVo.getMember().getFullAddress())
+//                .isAuthorized(memberDetailResponseVo.getMember().getIsAuthorized())
+//               // .companyRegisterImageDto(memberDetailResponseVo.getCompanyRegisterImage())
+//                //.constructorImageDto(memberDetailResponseVo.getMemberImage())
+//                .build();
+//    }
 
 
 }

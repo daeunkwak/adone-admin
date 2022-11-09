@@ -3,10 +3,14 @@ package app.adoneadmin.dto.member.request;
 import app.adoneadmin.dto.image.ImageDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(description = "시공사 회원정보 업데이트 요청 객체")
 public class MemberUpdateRequestDto {
 
@@ -30,17 +34,17 @@ public class MemberUpdateRequestDto {
     @NotNull
     private String fullAddress;
 
-    @ApiModelProperty(value = "승인여부")
-    @NotNull
-    private Boolean isAuthorized;   // TODO : ADMIN <-> isAuthorized - false 기본값으로 설정
+//    @ApiModelProperty(value = "승인여부")
+//    @NotNull
+//    private Boolean isAuthorized;   // TODO : ADMIN <-> isAuthorized - false 기본값으로 설정
 
-    @ApiModelProperty(value = "사업자 등록증 이미지")
-    @NotNull
-    private ImageDto companyRegisterImage;
-
-    @ApiModelProperty(value = "시공사 대표 이미지")
-    @NotNull
-    private ImageDto constructorImageDto;
+//    @ApiModelProperty(value = "사업자 등록증 이미지")
+//    @NotNull
+//    private ImageDto companyRegisterImage;
+//
+//    @ApiModelProperty(value = "시공사 대표 이미지")
+//    @NotNull
+//    private ImageDto constructorImageDto;
 
 
 }

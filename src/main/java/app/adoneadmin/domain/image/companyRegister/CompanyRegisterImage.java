@@ -2,8 +2,6 @@ package app.adoneadmin.domain.image.companyRegister;
 
 import app.adoneadmin.domain.image.Image;
 import app.adoneadmin.domain.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,10 +9,8 @@ import javax.persistence.*;
 
 @Getter
 @ToString(exclude = {"member"})
-@DiscriminatorValue("member")
+@DiscriminatorValue("companyRegister")
 @Entity
-@Builder
-@AllArgsConstructor
 public class CompanyRegisterImage extends Image {
 
     @OneToOne(fetch = FetchType.LAZY)

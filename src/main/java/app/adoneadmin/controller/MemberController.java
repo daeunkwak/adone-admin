@@ -2,6 +2,7 @@ package app.adoneadmin.controller;
 
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.dto.common.CommonApiResult;
+import app.adoneadmin.dto.image.ImageDto;
 import app.adoneadmin.dto.member.request.MemberUpdateRequestDto;
 import app.adoneadmin.dto.member.response.MemberAuthResponseDto;
 import app.adoneadmin.dto.member.response.MemberDetailResponseDto;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
@@ -51,8 +53,11 @@ public class MemberController {
     @GetMapping(value="/{memberId}")
     public ResponseEntity<MemberDetailResponseDto> getMemberList(@PathVariable("memberId") Long memberId){
 
-        MemberDetailResponseVo member = memberService.getMemberDetail(memberId);    // TODO : 이걸 몇 개로 쪼개는게 맞을까
-        MemberDetailResponseDto memberDetailResponseDto = MemberDetailResponseDto.from(member);
+        MemberDetailResponseVo memberDetailResponseVo = memberService.getMemberDetail(memberId);    // TODO : 이걸 몇 개로 쪼개는게 맞을까
+
+        ImageDto memberImageDto = new ImageDto(memberDetailResponseVo.getMember().getMemberImage().getImageId(), memberDetailResponseVo.getMember().getMemberImage().getImageUrl());
+        ImageDto companyRegisterImageDto = new ImageDto(memberDetailResponseVo.getMember().getCompanyRegisterImage().getImageId(), memberImageDto.getImageUrl());
+        MemberDetailResponseDto memberDetailResponseDto = new MemberDetailResponseDto(memberDetailResponseVo.getMember(), memberImageDto, companyRegisterImageDto);
         return ResponseEntity.ok(memberDetailResponseDto);
     }
 
@@ -77,7 +82,10 @@ public class MemberController {
     }
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원정보 수정 api")
+    @ApiOperation(value = "시공사 회원정보 수정 api",
+                  notes = "- companyRegisterImage, memberImage는 content-type=image/~,\n" +
+                          "- memberUpdateRequestDto는 content-type=application/json으로 보내주시면 됩니다.\n" +
+                          "- swagger에서는 인자별로 content-type 설정이 안돼서 swagger 내에서 테스트 하시면 415에러 발생합니다.")
     @PatchMapping(value = "/{memberId}")
     public ResponseEntity<CommonApiResult> updateMemberInfo(@PathVariable("memberId") Long memberId,
                                                             @RequestPart(value = "memberUpdateRequestDto") MemberUpdateRequestDto req,
