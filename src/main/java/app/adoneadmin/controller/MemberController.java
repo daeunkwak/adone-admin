@@ -39,7 +39,8 @@ public class MemberController {
     private final ImageService imageService;
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원 리스트 조회 api")
+    @ApiOperation(value = "시공사 회원 리스트 조회 api",
+                  notes = "additionalProp 에는 Long memberId가 들어갑니다.")
     @GetMapping(value="")
     public ResponseEntity<MemberResponseDto.GroupById> getMemberList(){
 
@@ -72,7 +73,8 @@ public class MemberController {
     }
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원 검색 api")
+    @ApiOperation(value = "시공사 회원 검색 api",
+            notes = "additionalProp 에는 Long memberId가 들어갑니다.")
     @GetMapping(value="/search")
     public ResponseEntity<MemberResponseDto.GroupById> getMemberSearch(@RequestParam("searchWord") String searchWord){
 
