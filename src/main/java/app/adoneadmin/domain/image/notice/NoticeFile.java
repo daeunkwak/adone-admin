@@ -12,15 +12,15 @@ import javax.persistence.*;
 @ToString(exclude = {"notice"})
 @DiscriminatorValue("notice")
 @Entity
-public class NoticeImage extends Image {
+public class NoticeFile extends Image {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id", nullable = false)
     private Notice notice;
 
-    protected NoticeImage(){}
+    protected NoticeFile(){}
 
-    public NoticeImage(Notice notice, String imageUrl){
+    public NoticeFile(Notice notice, String imageUrl){
         super(imageUrl);
         this.notice = notice;
     }
