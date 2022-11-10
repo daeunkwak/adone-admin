@@ -18,6 +18,9 @@ public class MemberDetailResponseDto {
     @ApiModelProperty(value = "유저 id", example = "2")
     private Long memberId;
 
+    @ApiModelProperty(value = "유저 로그인 id", example = "ssn7572")
+    private String loginId;
+
     @ApiModelProperty(value = "회사명", example = "모협조")
     private String companyName;
 
@@ -44,6 +47,7 @@ public class MemberDetailResponseDto {
 
     public MemberDetailResponseDto(Member member, ImageDto memberImageDto, ImageDto companyRegisterImageDto) {
         this.memberId = member.getMemberId();
+        this.loginId = member.getLoginId();
         this.companyName = member.getCompanyName();
         this.representName = member.getRepresentName();
         this.companyRegisterNumber = member.getCompanyRegistrationNumber();
