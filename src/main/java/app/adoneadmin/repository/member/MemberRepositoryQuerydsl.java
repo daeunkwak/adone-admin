@@ -9,5 +9,5 @@ import java.util.List;
 public interface MemberRepositoryQuerydsl {
     MemberDetailResponseVo getContractorInfo(Long memberId);
 
-//    List<Member> getMemberSearch(String searchWord);
+
 }

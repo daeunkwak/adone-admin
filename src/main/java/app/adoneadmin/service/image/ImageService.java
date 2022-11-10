@@ -1,6 +1,7 @@
 package app.adoneadmin.service.image;
 
 import app.adoneadmin.domain.image.Image;
+import app.adoneadmin.domain.image.companyRegister.CompanyRegisterImage;
 import app.adoneadmin.domain.image.companyRegister.CompanyRegisterImageRepository;
 import app.adoneadmin.domain.image.member.MemberImage;
 import app.adoneadmin.domain.image.member.MemberImageRepository;
@@ -37,6 +38,7 @@ public class ImageService {
         Long imageId = memberImageRepository.findByMemberId(memberId);
         if(imageId != null){
             remove(imageId);
+            memberImageRepository.deleteById(imageId);
         }
 
         String imageUrl = s3Uploader.s3UploadOfMemberImage(member, memberImage);
@@ -47,16 +49,17 @@ public class ImageService {
     /**
      * 시공사 업체 등록 이미지 업데이트
      */
-    public MemberImage updateCompanyRegisterImage(Long memberId, MultipartFile companyRegisterImage) throws IOException {
+    public CompanyRegisterImage updateCompanyRegisterImage(Long memberId, MultipartFile companyRegisterImage) throws IOException {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다."));
         Long imageId = companyRegisterImageRepository.findByMemberId(memberId);
         if(imageId != null){
             remove(imageId);
+            companyRegisterImageRepository.deleteById(imageId);
         }
 
-        String imageUrl = s3Uploader.s3UploadOfMemberImage(member, companyRegisterImage);
-        MemberImage result = new MemberImage(member, imageUrl);
+        String imageUrl = s3Uploader.s3UploadOfCompanyRegisterImage(member, companyRegisterImage);
+        CompanyRegisterImage result = new CompanyRegisterImage(member, imageUrl);
         return companyRegisterImageRepository.save(result);
     }
 
@@ -71,6 +74,6 @@ public class ImageService {
 
         //s3 이미지 파일 삭제
         s3Uploader.delete(image);
-        imageRepository.deleteById(imageId);
+       // imageRepository.deleteById(imageId);
     }
 }
