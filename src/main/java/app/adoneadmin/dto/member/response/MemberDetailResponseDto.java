@@ -33,8 +33,14 @@ public class MemberDetailResponseDto {
     @ApiModelProperty(value = "대표자 연락처", example = "010-2222-2222")
     private String representPhone;
 
-    @ApiModelProperty(value = "업장주소지", example = "노원구 인덕대")
+    @ApiModelProperty(value = "업장주소지", example = "노원구 인덕대 101동 101호")
     private String fullAddress;
+
+    @ApiModelProperty(value = "업장주소지 도로명/지번 주소", example = "노원구 인덕대")
+    private String buildingAddress;
+
+    @ApiModelProperty(value = "업장주소지 상세 주소", example = "101동 101호")
+    private String detailAddress;
 
     @ApiModelProperty(value = "승인여부", example = "true/false")
     private Boolean isAuthorized;
@@ -53,6 +59,8 @@ public class MemberDetailResponseDto {
         this.companyRegisterNumber = member.getCompanyRegistrationNumber();
         this.representPhone = member.getPhone();
         this.fullAddress = member.getFullAddress();
+        this.buildingAddress = member.getBuildingAddress();
+        this.detailAddress = member.getDetailAddress();
         this.isAuthorized = member.getIsAuthorized();
         this.memberImageDto = memberImageDto;
         this.companyRegisterImageDto = companyRegisterImageDto;

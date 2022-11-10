@@ -48,9 +48,13 @@ public class Member extends BaseTimeEntity {
 
     private String fullAddress; // 주소
 
+    private String buildingAddress; // 도로명/지번 주소
+
+    private String detailAddress; // 상세 주소
+
     private String bio; // 인사말
 
-    private Boolean isApproval; // jwt검증?
+    private Boolean isApproval; // jwt 검증?
 
     private Boolean isAuthorized; // 승인 여부
 

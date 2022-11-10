@@ -17,7 +17,9 @@ public class MemberUpdateVo {
 
     private String representPhone;
 
-    private String fullAddress;
+    private String buildingAddress;
+
+    private String detailAddress;
 
     private ImageDto companyRegisterImage;
 

@@ -81,8 +81,10 @@ public class MemberService {
 
         member.setCompanyName(memberUpdateVo.getCompanyName());
         member.setRepresentName(memberUpdateVo.getRepresentName());
-        member.setFullAddress(memberUpdateVo.getFullAddress());
+        member.setBuildingAddress(memberUpdateVo.getBuildingAddress());
+        member.setDetailAddress(memberUpdateVo.getDetailAddress());
         member.setRepresentPhone(memberUpdateVo.getRepresentPhone());
+        member.setFullAddress(memberUpdateVo.getBuildingAddress() + memberUpdateVo.getDetailAddress());
         return memberRepository.save(member);
     }
 
