@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @ApiModel(description = "이미지 반환 객체")
 public class ImageDto {
@@ -17,5 +16,10 @@ public class ImageDto {
 
     @ApiModelProperty(value = "저장된 이미지 url", example = "https://adone-bucket.s3.ap-northeast-2.amazonaws.com/requestSignboard/8_reference_bd613014-08ba-460b-87c7-fd3ab32cb832_2022030300006_0.png")
     private String imageUrl;
+
+    public ImageDto(){
+        this.imageId = null;
+        this.imageUrl = null;
+    }
 
 }

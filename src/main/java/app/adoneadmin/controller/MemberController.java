@@ -56,8 +56,18 @@ public class MemberController {
 
         MemberDetailResponseVo memberDetailResponseVo = memberService.getMemberDetail(memberId);    // TODO : 이걸 몇 개로 쪼개는게 맞을까
 
-        ImageDto memberImageDto = new ImageDto(memberDetailResponseVo.getMember().getMemberImage().getImageId(), memberDetailResponseVo.getMember().getMemberImage().getImageUrl());
-        ImageDto companyRegisterImageDto = new ImageDto(memberDetailResponseVo.getMember().getCompanyRegisterImage().getImageId(), memberImageDto.getImageUrl());
+        ImageDto memberImageDto = new ImageDto();
+        if(memberDetailResponseVo.getMember().getMemberImage() != null) {
+            memberImageDto.setImageId(memberDetailResponseVo.getMemberImage().getImageId());
+            memberImageDto.setImageUrl(memberDetailResponseVo.getMemberImage().getImageUrl());
+        }
+
+        ImageDto companyRegisterImageDto = new ImageDto();
+        if(memberDetailResponseVo.getMember().getCompanyRegisterImage() != null) {
+            companyRegisterImageDto.setImageId(memberDetailResponseVo.getCompanyRegisterImage().getImageId());
+            companyRegisterImageDto.setImageUrl(memberDetailResponseVo.getCompanyRegisterImage().getImageUrl());
+        }
+
         MemberDetailResponseDto memberDetailResponseDto = new MemberDetailResponseDto(memberDetailResponseVo.getMember(), memberImageDto, companyRegisterImageDto);
         return ResponseEntity.ok(memberDetailResponseDto);
     }
