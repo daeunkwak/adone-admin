@@ -12,17 +12,14 @@ import app.adoneadmin.service.member.MemberService;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import app.adoneadmin.vo.member.MemberUpdateVo;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,14 +36,11 @@ public class MemberController {
     private final ImageService imageService;
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원 리스트 조회 api",
-                  notes = "additionalProp 에는 Long memberId가 들어갑니다.")
+    @ApiOperation(value = "시공사 회원 리스트 조회 api")
     @GetMapping(value="")
-    public ResponseEntity<MemberResponseDto.GroupById> getMemberList(){
+    public ResponseEntity<List<MemberResponseDto>> getMemberList(){
 
-        List<MemberResponseDto> memberResponseDtoList =
-                memberService.getMemberList().stream().map(MemberResponseDto::from).collect(Collectors.toList());
-        return ResponseEntity.ok(new MemberResponseDto.GroupById(memberResponseDtoList));
+        return ResponseEntity.ok(memberService.getMemberList().stream().map(MemberResponseDto::from).collect(Collectors.toList()));
     }
 
     @Tag(name = "members")
@@ -54,7 +48,7 @@ public class MemberController {
     @GetMapping(value="/{memberId}")
     public ResponseEntity<MemberDetailResponseDto> getMemberList(@PathVariable("memberId") Long memberId){
 
-        MemberDetailResponseVo memberDetailResponseVo = memberService.getMemberDetail(memberId);    // TODO : 이걸 몇 개로 쪼개는게 맞을까
+        MemberDetailResponseVo memberDetailResponseVo = memberService.getMemberDetail(memberId);
 
         ImageDto memberImageDto = new ImageDto();
         if(memberDetailResponseVo.getMember().getMemberImage() != null) {
@@ -83,14 +77,11 @@ public class MemberController {
     }
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원 검색 api",
-            notes = "additionalProp 에는 Long memberId가 들어갑니다.")
+    @ApiOperation(value = "시공사 회원 검색 api")
     @GetMapping(value="/search")
-    public ResponseEntity<MemberResponseDto.GroupById> getMemberSearch(@RequestParam("searchWord") String searchWord){
+    public ResponseEntity<List<MemberResponseDto>> getMemberSearch(@RequestParam("searchWord") String searchWord){
 
-        List<MemberResponseDto> memberResponseDtoList =
-                memberService.getMemberSearch(searchWord).stream().map(MemberResponseDto::from).collect(Collectors.toList());
-        return ResponseEntity.ok(new MemberResponseDto.GroupById(memberResponseDtoList));
+        return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().map(MemberResponseDto::from).collect(Collectors.toList()));
     }
 
     @Tag(name = "members")
