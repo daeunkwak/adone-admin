@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/notice/**", "/auth/logout").authenticated()  // TODO : api 추가
+                //.antMatchers("/api/members/**").authenticated()  // TODO : api 추가
                 .anyRequest().permitAll()
 
                 .and()
