@@ -2,6 +2,7 @@ package app.adoneadmin.repository.member;
 
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @Transactional
     @Query("select m from Member m where m.companyName like %:searchWord% order by m.memberId desc")
     List<Member> getMemberSearch(@Param("searchWord") String searchWord);
+
+    @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Member> findByLoginId(String loginId);
 }

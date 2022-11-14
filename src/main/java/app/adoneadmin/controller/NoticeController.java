@@ -1,6 +1,8 @@
 package app.adoneadmin.controller;
 
 import app.adoneadmin.domain.notice.Notice;
+import app.adoneadmin.dto.common.CommonApiResult;
+import app.adoneadmin.dto.image.ImageDto;
 import app.adoneadmin.dto.notice.request.NoticeCreateRequestDto;
 import app.adoneadmin.dto.notice.response.NoticeCreateResponseDto;
 import app.adoneadmin.dto.notice.response.NoticeResponseDto;
@@ -8,6 +10,7 @@ import app.adoneadmin.security.auth.PrincipalDetails;
 import app.adoneadmin.service.file.FileService;
 import app.adoneadmin.service.image.ImageService;
 import app.adoneadmin.service.notice.NoticeService;
+import app.adoneadmin.vo.notice.NoticeDetailResponseVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Tag(name = "notice", description = "공지사항 API")
@@ -31,40 +36,47 @@ import java.util.List;
 @Slf4j
 public class NoticeController {
 
-    NoticeService noticeService;
-    FileService fileService;
+    private final NoticeService noticeService;
+    private final FileService fileService;
 
     @Tag(name = "notice")
     @ApiOperation(value = "공지사항 생성 api")
     @PostMapping(value="")
     public ResponseEntity<NoticeCreateResponseDto> createNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                                                @RequestPart List<MultipartFile> noticeFiles,
-                                                                @RequestPart @Valid NoticeCreateRequestDto req){
-
-        Notice notice = noticeService.createNotice(req.toEntity(principalDetails.getMember()));
-        fileService.uploadNoticeFiles(noticeFiles);
-
-
-        //return ResponseEntity.ok(NoticeCreateResponseDto.create(noticeId), HttpStatus.CREATED);
-        return new ResponseEntity<>(NoticeCreateResponseDto.create(1L), HttpStatus.CREATED);
+                                                                @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles,
+                                                                @RequestPart(value = "req") NoticeCreateRequestDto req) throws IOException {
+        log.info("NoticeCreateRequestDto ::: " + req);
+        log.info("noticeFiles ::: " + noticeFiles);
+        Notice notice = noticeService.createNotice(principalDetails.getMember(), req.getNoticeContent(), req.getNoticeName());
+        fileService.uploadNoticeFiles(noticeFiles, notice.getNoticeId());
+        return new ResponseEntity<>(NoticeCreateResponseDto.create(notice.getNoticeId()), HttpStatus.CREATED);
     }
 
     @Tag(name = "notice")
     @ApiOperation(value = "공지사항 리스트 조회 api")
     @GetMapping(value="")
-    public ResponseEntity<List<NoticeResponseDto>> getAllNotice(@RequestBody @Valid NoticeCreateResponseDto req){
-        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-        return ResponseEntity.ok(noticeResponseDtos);
+    public ResponseEntity<List<NoticeResponseDto>> getAllNotice(){
+
+        List<Notice> noticeList = noticeService.getNoticeList();
+
+        List<NoticeResponseDto> result = new ArrayList<>();
+        for(Notice notice : noticeList){
+            if(notice.getNoticeFileList() != null){
+                result.add(new NoticeResponseDto(notice, notice.getNoticeFileList()));
+            }
+        }
+        return ResponseEntity.ok(result);
     }
-//
-//    @Tag(name = "notice")
-//    @ApiOperation(value = "공지사항 단건 조회 api")
-//    @GetMapping(value="/{noticeId}")
-//    public ResponseEntity<NoticeResponseDto> getNotice(// @ApiIgnore @PrincipalDetail Long memberId,
-//                                                                 @PathVariable("noticeId") Long noticeId){
-//        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-//        return ResponseEntity.ok(NoticeResponseDto.from(notice));
-//    }
+
+
+    @Tag(name = "notice")
+    @ApiOperation(value = "공지사항 상세 조회 api")
+    @GetMapping(value="/{noticeId}")
+    public ResponseEntity<NoticeResponseDto> getNotice(@PathVariable("noticeId") Long noticeId){
+
+        Notice notice = noticeService.getNotice(noticeId);
+        return ResponseEntity.ok(NoticeResponseDto.from(notice));
+    }
 
     // 공지사항 검색 NoticeResponseDto
 

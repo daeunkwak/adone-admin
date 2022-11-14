@@ -21,6 +21,11 @@ public class PrincipalDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collector = new ArrayList<>();
 
+        member.getRoleSet().forEach(role -> {
+            collector.add(() -> {
+                return "ROLE_" + role;
+            });});
+
         return collector;
     }
 
