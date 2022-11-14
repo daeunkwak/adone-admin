@@ -1,7 +1,7 @@
 package app.adoneadmin.domain.notice;
 
 import app.adoneadmin.domain.base.BaseTimeEntity;
-import app.adoneadmin.domain.image.notice.NoticeImage;
+import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.member.Member;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"member"})
+@ToString(exclude = "member")
 @Getter
 @Setter
 @Entity
@@ -31,6 +31,15 @@ public class Notice extends BaseTimeEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
-    private List<NoticeImage> noticeImageList = new ArrayList<>();
+    private List<NoticeFile> noticeFileList = new ArrayList<>();
+
+    public static Notice create(Member member, String noticeName, String noticeContent) {
+
+        return Notice.builder()
+                .noticeName(noticeName)
+                .noticeContent(noticeContent)
+                .member(member)
+                .build();
+    }
 
 }

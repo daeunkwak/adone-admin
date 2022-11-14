@@ -2,19 +2,26 @@ package app.adoneadmin.s3;
 
 import app.adoneadmin.domain.image.Image;
 import app.adoneadmin.domain.member.Member;
+import app.adoneadmin.domain.notice.Notice;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +59,37 @@ public class S3Uploader {
 
         //파일 이름
         String frontName = String.valueOf(member.getMemberId());
+        String fileName = createFileName(frontName, multipartFile.getOriginalFilename());
+
+        return s3Upload(folderPath, fileName, multipartFile);
+    }
+
+    /**
+     * 공지사항 파일 리스트 업로드
+     */
+    public List<String> s3UploadOfNoticeFiles(Notice notice, List<MultipartFile> multipartFiles) throws IOException {
+
+        List<String> fileUrlList = new ArrayList<>();
+
+        if(!multipartFiles.isEmpty() && !multipartFiles.get(0).isEmpty()){
+            for(MultipartFile multipartFile : multipartFiles){
+                fileUrlList.add(s3UploadOfNoticeFile(notice, multipartFile));
+            }
+        }
+        return fileUrlList;
+    }
+
+
+    /**
+     * 공지사항 파일 단일 업로드
+     */
+    public String s3UploadOfNoticeFile(Notice notice, MultipartFile multipartFile) throws IOException {
+
+        //폴더 경로
+        String folderPath = "notice";
+
+        //파일 이름
+        String frontName = String.valueOf(notice.getNoticeId());
         String fileName = createFileName(frontName, multipartFile.getOriginalFilename());
 
         return s3Upload(folderPath, fileName, multipartFile);
@@ -132,6 +170,29 @@ public class S3Uploader {
         }
 
         return Optional.empty();
+    }
+
+    // file upload 추가
+    public List<String> uploadFile(List<MultipartFile> multipartFile, String frontName) {
+        List<String> fileNames = new ArrayList<>();
+
+        multipartFile.forEach(file -> {
+            String fileName = createFileName(frontName, file.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
+
+            try (InputStream inputStream = file.getInputStream()) {
+                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+            }
+
+            fileNames.add(fileName);
+        });
+
+        return fileNames;
     }
 
     private String createFileName(String frontName, String originalFileName) {

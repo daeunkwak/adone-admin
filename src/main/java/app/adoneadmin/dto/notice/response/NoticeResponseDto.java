@@ -1,5 +1,7 @@
 package app.adoneadmin.dto.notice.response;
 
+import app.adoneadmin.domain.file.notice.NoticeFile;
+import app.adoneadmin.domain.notice.Notice;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -8,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,24 +40,62 @@ public class NoticeResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createTime;
 
-//    public static NoticeResponseDto from (Notice notice){
-//
-//    }
+    @ApiModelProperty(value = "공지사항 파일 리스트")
+    private List<String> noticeFileList;
 
-    @ApiModel(description = "공지사항 리스트 조회 반환 객체")
-    public static class GroupById{
+    public NoticeResponseDto(Notice notice){
+        this.noticeId = notice.getNoticeId();
+        this.userName = notice.getNoticeName();
+        this.noticeName = notice.getNoticeName();
+        this.noticeContent = notice.getNoticeContent();
+        this.createTime = notice.getRegDateTime();
 
-        @ApiModelProperty(value = "공지사항 리스트")
-        private Map<Long, NoticeResponseDto> noticeResponseDtoGroupById;
+        this.noticeFileList = new ArrayList<>();
 
-        public GroupById(List<NoticeResponseDto> noticeResponseDtos){
-            Map<Long, NoticeResponseDto> result = new HashMap<>();
-            for(NoticeResponseDto noticeResponseDto : noticeResponseDtos){
-                result.put(noticeResponseDto.getNoticeId(), noticeResponseDto);
+        List<NoticeFile> noticeFileList = notice.getNoticeFileList();
+        if(!noticeFileList.isEmpty()){
+            for(NoticeFile noticeFile : noticeFileList){
+                this.noticeFileList.add(noticeFile.getFileUrl());
             }
-            this.noticeResponseDtoGroupById = result;
+        }
+    }
+
+    public NoticeResponseDto(Notice notice, List<NoticeFile> noticeFileList){
+        this.noticeId = notice.getNoticeId();
+        this.userName = notice.getNoticeName();
+        this.noticeName = notice.getNoticeName();
+        this.noticeContent = notice.getNoticeContent();
+        this.createTime = notice.getRegDateTime();
+
+        this.noticeFileList = new ArrayList<>();
+
+        if(!noticeFileList.isEmpty()){
+            for(NoticeFile noticeFile : noticeFileList){
+                this.noticeFileList.add(noticeFile.getFileUrl());
+            }
         }
 
+    }
+
+    public static NoticeResponseDto from(Notice notice){
+
+        List<String> fileUrlList = new ArrayList<>();
+        List<NoticeFile> noticeFileList = notice.getNoticeFileList();
+        if(!noticeFileList.isEmpty()){
+            for(NoticeFile noticeFile : noticeFileList){
+                fileUrlList.add(noticeFile.getFileUrl());
+            }
+        }
+
+
+        return new NoticeResponseDtoBuilder()
+            .noticeId(notice.getNoticeId())
+            .userName(notice.getNoticeName())
+            .noticeName(notice.getNoticeName())
+            .noticeContent(notice.getNoticeContent())
+            .createTime(notice.getRegDateTime())
+                .noticeFileList(fileUrlList)
+                .build();
     }
 
 }
