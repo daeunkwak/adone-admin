@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Tag(name = "notice", description = "공지사항 API")
+@Tag(name = "notice", description = "공지사항 api")
 @RequestMapping("/api/notification")
 @RequiredArgsConstructor
 @RestController
@@ -78,10 +78,10 @@ public class NoticeController {
         return ResponseEntity.ok(NoticeResponseDto.from(notice));
     }
 
-    // 공지사항 검색 NoticeResponseDto
+    // 공지사항 검색 List<NoticeResponseDto>
 
-    // 공지사항 수정 NoticeResponseDto.GroupById
+    // 공지사항 수정 NoticeResponseDto
 
-    // 공지사항 삭제 OK
+    // 공지사항 삭제
 
 }
