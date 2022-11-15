@@ -21,8 +21,14 @@ public abstract class File {
     @Column(nullable = false, length = 300)
     private String fileUrl;
 
+    private boolean isDeleted;
+
     public File(String fileUrl){
         this.fileUrl = fileUrl;
+    }
+
+    public void updateIsDeleted(){
+        this.isDeleted = true;
     }
 
 }

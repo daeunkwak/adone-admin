@@ -3,6 +3,7 @@ package app.adoneadmin.global.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,13 +22,13 @@ import java.util.*;
 @EnableOpenApi
 public class SwaggerConfig{
 
-    @Value("${swagger.url}")
+    @Value("{swagger.url}")
     private String url;
 
-    @Value("${swagger.desc}")
+    @Value("{swagger.desc}")
     private String desc;
 
-    @Value("${spring.profiles.active}")
+    @Value("{spring.profiles.active}")
     private String profile;
 
     @Bean

@@ -43,6 +43,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberList().stream().map(MemberResponseDto::from).collect(Collectors.toList()));
     }
 
+
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 상세 조회 api")
     @GetMapping(value="/{memberId}")
@@ -66,6 +67,7 @@ public class MemberController {
         return ResponseEntity.ok(memberDetailResponseDto);
     }
 
+
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 승인 api", notes = "이미 승인된 회원 -> exception")
     @PatchMapping(value = "/auth/{memberId}")
@@ -76,6 +78,7 @@ public class MemberController {
         return ResponseEntity.ok(memberAuthResponseDto);
     }
 
+
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 검색 api")
     @GetMapping(value="/search")
@@ -83,6 +86,7 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().map(MemberResponseDto::from).collect(Collectors.toList()));
     }
+
 
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원정보 수정 api",
@@ -98,7 +102,9 @@ public class MemberController {
         log.info("MemberUpdateRequestDto :::::" + req);
         log.info("companyRegisterImage ContentType ::::: " + companyRegisterImage.getContentType());
         log.info("memberImage ContentType ::::: " + memberImage.getContentType());
+
         final MemberUpdateVo memberUpdateVo = new MemberUpdateVo();
+
         modelMapper.map(req, memberUpdateVo);
         memberService.updateMemberInfo(memberUpdateVo, memberId);
         imageService.updateMemberImage(memberId, memberImage);

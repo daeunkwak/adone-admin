@@ -1,9 +1,13 @@
 package app.adoneadmin.service.file;
 
+import app.adoneadmin.domain.file.File;
 import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.file.notice.NoticeFileRepository;
+import app.adoneadmin.domain.image.Image;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.global.exception.handler.CustomException;
+import app.adoneadmin.global.exception.handler.NoSuchIdException;
+import app.adoneadmin.repository.file.FileRepository;
 import app.adoneadmin.repository.notice.NoticeRepository;
 import app.adoneadmin.s3.S3Uploader;
 import com.amazonaws.services.s3.AmazonS3;
@@ -27,14 +31,13 @@ public class FileService {
     private final NoticeRepository noticeRepository;
     private final NoticeFileRepository noticeFileRepository;
     private final S3Uploader s3Uploader;
+    private final FileRepository fileRepository;
 
 
     public List<NoticeFile> uploadNoticeFiles(List<MultipartFile> noticeFiles, Long noticeId) throws IOException {
 
-        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new CustomException("존재하지 않는 공지사항입니다."));
+        Notice notice = findNoticeOrThrow(noticeId);
         List<String> fileUrlList = s3Uploader.s3UploadOfNoticeFiles(notice, noticeFiles);
-
-        log.info("file urlllllllllllllllllllllllllll ::: " + fileUrlList);
 
         List<NoticeFile> noticeFileList = new ArrayList<>();
         if(!fileUrlList.isEmpty()){
@@ -45,5 +48,35 @@ public class FileService {
         }
 
         return noticeFileList;
+    }
+
+    public List<NoticeFile> updateNoticeFiles(List<MultipartFile> noticeFiles, long noticeId) throws IOException {
+
+        Notice notice = findNoticeOrThrow(noticeId);
+
+        List<Long> fileIdList = noticeFileRepository.findByNoticeId(notice.getNoticeId());
+        if(!fileIdList.isEmpty()){
+            for(Long fileId : fileIdList){
+                File file = fileRepository.findById(fileId).orElseThrow(() -> new NoSuchIdException("요청하신 파일은 존재하지 않습니다."));
+                file.updateIsDeleted();
+            }
+        }
+
+        List<String> fileUrlList = s3Uploader.s3UploadOfNoticeFiles(notice, noticeFiles);
+        List<NoticeFile> noticeFileList = new ArrayList<>();
+        if(!fileUrlList.isEmpty()){
+            for(String fileUrl : fileUrlList){
+                NoticeFile noticeFile = noticeFileRepository.save(new NoticeFile(notice, fileUrl));
+                noticeFileList.add(noticeFile);
+            }
+        }
+        return noticeFileList;
+    }
+
+
+    private Notice findNoticeOrThrow(Long noticeId){
+        return noticeRepository.findById(noticeId).orElseThrow(() -> {
+            throw new NoSuchIdException("요청하신 공지사항은 존재하지 않습니다.");
+        });
     }
 }

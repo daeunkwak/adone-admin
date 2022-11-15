@@ -2,7 +2,9 @@ package app.adoneadmin.service.notice;
 
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.notice.Notice;
+import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
+import app.adoneadmin.global.exception.handler.NoSuchMemberException;
 import app.adoneadmin.repository.member.MemberRepository;
 import app.adoneadmin.repository.notice.NoticeRepository;
 import app.adoneadmin.vo.notice.NoticeDetailResponseVo;
@@ -67,4 +69,34 @@ public class NoticeService {
 
         return noticeRepository.getNoticeSearch(searchWord);
     }
+
+    /**
+     * 공지사항 수정
+     */
+    public Notice updateNotice(Long memberId, Long noticeId, String noticeContent, String noticeName) {
+
+        Notice notice = findNoticeOrThrow(noticeId);
+
+        if(notice.getMember().getMemberId() != memberId){
+            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
+        }
+
+        notice.updateNoticeName(noticeName);
+        notice.updateNoticeContent(noticeContent);
+        return notice;
+    }
+
+    private Notice findNoticeOrThrow(Long noticeId){
+        return noticeRepository.findById(noticeId).orElseThrow(() -> {
+            throw new NoSuchIdException("요청하신 공지사항은 존재하지 않습니다.");
+        });
+    }
+
+    private Member findMemberOrThrow(Long memberId){
+        return memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new NoSuchMemberException("존재하지 않는 회원입니다.");
+        });
+    }
+
+
 }
