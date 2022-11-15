@@ -86,6 +86,17 @@ public class NoticeService {
         return notice;
     }
 
+    /**
+     * 공지사항 삭제
+     */
+    public void deleteNotice(List<Long> noticeIdList) {
+
+        for(Long noticeId : noticeIdList){
+            noticeRepository.deleteById(noticeId);
+        }
+    }
+
+
     private Notice findNoticeOrThrow(Long noticeId){
         return noticeRepository.findById(noticeId).orElseThrow(() -> {
             throw new NoSuchIdException("요청하신 공지사항은 존재하지 않습니다.");

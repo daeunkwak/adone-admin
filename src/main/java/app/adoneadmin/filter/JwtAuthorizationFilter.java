@@ -59,7 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (memberId != null) {
                 System.out.println("memberId: " + memberId);
                 Member member = memberRepository.findById(memberId).orElseThrow(() ->
-                        new NoSuchMemberException("존재하지 않는 회원입니다...대체 왜"));
+                        new NoSuchMemberException("존재하지 않는 회원입니다..."));
 
                 //DB에 저장된 jwt 와 다를 경우
                 if(accessToken.equals(member.getJwt())){
