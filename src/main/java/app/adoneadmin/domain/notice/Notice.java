@@ -42,4 +42,12 @@ public class Notice extends BaseTimeEntity {
                 .build();
     }
 
+    public void updateNoticeName(String noticeName){
+        this.noticeName = noticeName;
+    }
+
+    public void updateNoticeContent(String noticeContent){
+        this.noticeContent = noticeContent;
+    }
+
 }

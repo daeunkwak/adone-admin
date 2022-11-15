@@ -117,7 +117,7 @@ public class S3Uploader {
     }
 
     /**
-     * S3 파일 삭제
+     * S3 이미지 삭제
      */
     public void delete(Image image){
         try{

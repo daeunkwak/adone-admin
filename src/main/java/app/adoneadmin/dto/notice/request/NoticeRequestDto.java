@@ -10,8 +10,8 @@ import lombok.Getter;
 
 @Getter
 @Data
-@ApiModel(description = "공지사항 생성 요청 객체")
-public class NoticeCreateRequestDto {
+@ApiModel(description = "공지사항 생성, 수정 요청 객체")
+public class NoticeRequestDto {
 
     @ApiModelProperty(value = "공지사항 제목")
     private String noticeName;

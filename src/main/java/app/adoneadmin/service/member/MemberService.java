@@ -2,7 +2,9 @@ package app.adoneadmin.service.member;
 
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.member.constant.MemberRole;
+import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.global.exception.handler.BadRequestException;
+import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.global.exception.handler.NoSuchMemberException;
 import app.adoneadmin.repository.member.MemberRepository;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
@@ -38,7 +40,7 @@ public class MemberService {
      */
     public MemberDetailResponseVo getMemberDetail(Long memberId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다."));
+        Member member = findMemberOrThrow(memberId);
 
         MemberDetailResponseVo memberDetailResponseVo = new MemberDetailResponseVo();
         memberDetailResponseVo.setMemberImage(member.getMemberImage());
@@ -53,7 +55,7 @@ public class MemberService {
      */
     public Member updateAuth(Long memberId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다."));
+        Member member = findMemberOrThrow(memberId);
         if (member.getIsAuthorized()){
             throw new BadRequestException("이미 승인된 회원입니다.");
         }
@@ -77,7 +79,7 @@ public class MemberService {
      */
     public Member updateMemberInfo(MemberUpdateVo memberUpdateVo, Long memberId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다."));
+        Member member = findMemberOrThrow(memberId);
 
         member.setCompanyName(memberUpdateVo.getCompanyName());
         member.setRepresentName(memberUpdateVo.getRepresentName());
@@ -88,6 +90,11 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    private Member findMemberOrThrow(Long noticeId){
+        return memberRepository.findById(noticeId).orElseThrow(() -> {
+            throw new NoSuchMemberException("존재하지 않는 회원입니다.");
+        });
+    }
 
 }
 

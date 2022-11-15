@@ -1,6 +1,7 @@
 package app.adoneadmin.filter;
 
 import app.adoneadmin.domain.member.Member;
+import app.adoneadmin.global.exception.handler.NoSuchMemberException;
 import app.adoneadmin.global.utl.JwtUtil;
 import app.adoneadmin.repository.member.MemberRepository;
 import app.adoneadmin.security.auth.PrincipalDetails;
@@ -58,7 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (memberId != null) {
                 System.out.println("memberId: " + memberId);
                 Member member = memberRepository.findById(memberId).orElseThrow(() ->
-                        new IllegalArgumentException("존재하지 않는 회원입니다."));
+                        new NoSuchMemberException("존재하지 않는 회원입니다...대체 왜"));
 
                 //DB에 저장된 jwt 와 다를 경우
                 if(accessToken.equals(member.getJwt())){
@@ -75,7 +76,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-
 
 
     }
