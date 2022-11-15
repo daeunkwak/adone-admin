@@ -1,5 +1,6 @@
 package app.adoneadmin.controller;
 
+import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.notice.request.NoticeDeleteRequestDto;
@@ -99,17 +100,26 @@ public class NoticeController {
 
 
     @Tag(name = "notification")
-    @ApiOperation(value = "공지사할 수정 api")
+    @ApiOperation(value = "공지사항 수정 api")
     @PatchMapping(value = "/{noticeId}")
     public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                         @PathVariable("noticeId") Long noticeId,
-                                                        @RequestPart(value = "req") NoticeRequestDto req,
-                                                        @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
-        log.info("principalDetail ::::::: " + principalDetails);
+                                                        @RequestPart(value = "req") NoticeRequestDto req){
 
-        Notice notice = noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
-        fileService.updateNoticeFiles(noticeFiles, notice.getNoticeId());
+        noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
+    }
+
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 첨부파일 수정 api")
+    @PatchMapping(value = "/file/{noticeId}")
+    public ResponseEntity<CommonApiResult> updateNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                            @PathVariable("noticeId") Long noticeId,
+                                                            @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
+
+        fileService.updateNoticeFiles(principalDetails.getMember().getMemberId(), noticeFiles, noticeId);
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항 첨부파일이 업데이트 되었습니다."));
     }
 
 

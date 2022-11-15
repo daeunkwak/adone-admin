@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface NoticeRepository extends JpaRepository<Notice, Long> {
+public interface NoticeRepository extends JpaRepository<Notice, Long>, NoticeRepositoryQuerydsl {
 
     @Transactional
     @Query("select n from Notice n where n.noticeName like %:searchWord% order by n.noticeId desc")
