@@ -60,4 +60,11 @@ public class NoticeService {
         return noticeRepository.getById(noticeId);
     }
 
+    /**
+     * 공지사항 검색
+     */
+    public List<Notice> getNoticeSearch(String searchWord) {
+
+        return noticeRepository.getNoticeSearch(searchWord);
+    }
 }

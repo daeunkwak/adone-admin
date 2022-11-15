@@ -95,6 +95,9 @@ public class MemberController {
                                                             @RequestPart(value = "companyRegisterImage") MultipartFile companyRegisterImage,
                                                             @RequestPart(value = "memberImage") MultipartFile memberImage) throws IOException {
 
+        log.info("MemberUpdateRequestDto :::::" + req);
+        log.info("companyRegisterImage ContentType ::::: " + companyRegisterImage.getContentType());
+        log.info("memberImage ContentType ::::: " + memberImage.getContentType());
         final MemberUpdateVo memberUpdateVo = new MemberUpdateVo();
         modelMapper.map(req, memberUpdateVo);
         memberService.updateMemberInfo(memberUpdateVo, memberId);

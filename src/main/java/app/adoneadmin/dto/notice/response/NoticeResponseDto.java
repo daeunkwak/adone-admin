@@ -35,10 +35,10 @@ public class NoticeResponseDto {
     @ApiModelProperty(value = "공지사항 내용")
     private String noticeContent;
 
-    @ApiModelProperty(value = "작성일", example = "2022-07-02T09:00:00")
+    @ApiModelProperty(value = "작성일", example = "2022-07-02")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDateTime regDateTime;
 
     @ApiModelProperty(value = "공지사항 파일 리스트")
     private List<String> noticeFileList;
@@ -48,7 +48,7 @@ public class NoticeResponseDto {
         this.userName = notice.getNoticeName();
         this.noticeName = notice.getNoticeName();
         this.noticeContent = notice.getNoticeContent();
-        this.createTime = notice.getRegDateTime();
+        this.regDateTime = notice.getRegDateTime();
 
         this.noticeFileList = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class NoticeResponseDto {
         this.userName = notice.getNoticeName();
         this.noticeName = notice.getNoticeName();
         this.noticeContent = notice.getNoticeContent();
-        this.createTime = notice.getRegDateTime();
+        this.regDateTime = notice.getRegDateTime();
 
         this.noticeFileList = new ArrayList<>();
 
@@ -93,7 +93,7 @@ public class NoticeResponseDto {
             .userName(notice.getNoticeName())
             .noticeName(notice.getNoticeName())
             .noticeContent(notice.getNoticeContent())
-            .createTime(notice.getRegDateTime())
+            .regDateTime(notice.getRegDateTime())
                 .noticeFileList(fileUrlList)
                 .build();
     }

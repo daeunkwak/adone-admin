@@ -30,9 +30,13 @@ public class MemberUpdateRequestDto {
     @NotNull
     private String representPhone;
 
-    @ApiModelProperty(value = "업장주소지")
+    @ApiModelProperty(value = "업장주소지 도로명/지번 주소", example = "노원구 인덕대")
     @NotNull
-    private String fullAddress;
+    private String buildingAddress;
+
+    @ApiModelProperty(value = "업장주소지 상세 주소", example = "101동 101호")
+    @NotNull
+    private String detailAddress;
 
 //    @ApiModelProperty(value = "승인여부")
 //    @NotNull
