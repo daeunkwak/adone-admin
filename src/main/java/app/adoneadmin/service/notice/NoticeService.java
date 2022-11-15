@@ -29,7 +29,6 @@ public class NoticeService {
      */
     public Notice createNotice(Member member, String noticeContent, String noticeName) {
 
-        log.info("왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래");
         Notice notice = Notice.create(member, noticeName, noticeContent);
         return noticeRepository.save(notice);
     }
@@ -59,7 +58,8 @@ public class NoticeService {
      */
     public Notice getNotice(Long noticeId) {
 
-        return noticeRepository.getById(noticeId);
+        //return noticeRepository.getById(noticeId);
+        return noticeRepository.getNotice(noticeId);
     }
 
     /**
@@ -85,6 +85,18 @@ public class NoticeService {
         notice.updateNoticeContent(noticeContent);
         return notice;
     }
+
+
+    /**
+     * 공지사항 삭제
+     */
+    public void deleteNotice(List<Long> noticeIdList) {
+
+        for(Long noticeId : noticeIdList){
+            noticeRepository.deleteById(noticeId);
+        }
+    }
+
 
     private Notice findNoticeOrThrow(Long noticeId){
         return noticeRepository.findById(noticeId).orElseThrow(() -> {

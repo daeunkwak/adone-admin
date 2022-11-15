@@ -34,6 +34,9 @@ public class FileService {
     private final FileRepository fileRepository;
 
 
+    /**
+     * 공지사항 첨부파일 리스트 업로드
+     */
     public List<NoticeFile> uploadNoticeFiles(List<MultipartFile> noticeFiles, Long noticeId) throws IOException {
 
         Notice notice = findNoticeOrThrow(noticeId);
@@ -50,9 +53,16 @@ public class FileService {
         return noticeFileList;
     }
 
-    public List<NoticeFile> updateNoticeFiles(List<MultipartFile> noticeFiles, long noticeId) throws IOException {
+
+    /**
+     * 공지사항 첨부파일 리스트 업데이트
+     */
+    public List<NoticeFile> updateNoticeFiles(long memberId, List<MultipartFile> noticeFiles, long noticeId) throws IOException {
 
         Notice notice = findNoticeOrThrow(noticeId);
+        if(notice.getMember().getMemberId() != memberId){
+            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
+        }
 
         List<Long> fileIdList = noticeFileRepository.findByNoticeId(notice.getNoticeId());
         if(!fileIdList.isEmpty()){
@@ -79,4 +89,5 @@ public class FileService {
             throw new NoSuchIdException("요청하신 공지사항은 존재하지 않습니다.");
         });
     }
+
 }

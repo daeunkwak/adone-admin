@@ -1,7 +1,9 @@
 package app.adoneadmin.controller;
 
+import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.dto.common.CommonApiResult;
+import app.adoneadmin.dto.notice.request.NoticeDeleteRequestDto;
 import app.adoneadmin.dto.notice.request.NoticeRequestDto;
 import app.adoneadmin.dto.notice.response.NoticeCreateResponseDto;
 import app.adoneadmin.dto.notice.response.NoticeResponseDto;
@@ -43,10 +45,13 @@ public class NoticeController {
                                                                 @RequestPart(value = "req") NoticeRequestDto req) throws IOException {
         log.info("NoticeCreateRequestDto ::: " + req);
         log.info("noticeFiles ::: " + noticeFiles);
+        log.info("principalDetails ::: " + principalDetails);
+
         Notice notice = noticeService.createNotice(principalDetails.getMember(), req.getNoticeContent(), req.getNoticeName());
         fileService.uploadNoticeFiles(noticeFiles, notice.getNoticeId());
         return new ResponseEntity<>(NoticeCreateResponseDto.create(notice.getNoticeId()), HttpStatus.CREATED);
     }
+
 
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 리스트 조회 api")
@@ -74,7 +79,7 @@ public class NoticeController {
         return ResponseEntity.ok(NoticeResponseDto.from(notice));
     }
 
-    // 공지사항 검색 List<NoticeResponseDto>
+
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 검색 api")
     @GetMapping(value="/search")
@@ -91,7 +96,19 @@ public class NoticeController {
         return ResponseEntity.ok(result);
     }
 
-    // 공지사항 수정 NoticeResponseDto
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 수정 api")
+    @PatchMapping(value = "/{noticeId}")
+    public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                        @PathVariable("noticeId") Long noticeId,
+                                                        @RequestPart(value = "req") NoticeRequestDto req){
+
+        noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
+    }
+
+
     @Tag(name = "notification")
     @ApiOperation(value = "공지사할 수정 api")
     @PatchMapping(value = "/{noticeId}")
@@ -106,6 +123,26 @@ public class NoticeController {
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
     }
 
-    // 공지사항 삭제
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 첨부파일 수정 api")
+    @PatchMapping(value = "/file/{noticeId}")
+    public ResponseEntity<CommonApiResult> updateNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                            @PathVariable("noticeId") Long noticeId,
+                                                            @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
+
+        fileService.updateNoticeFiles(principalDetails.getMember().getMemberId(), noticeFiles, noticeId);
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항 첨부파일이 업데이트 되었습니다."));
+    }
+
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 삭제 api")
+    @DeleteMapping("")
+    public ResponseEntity<CommonApiResult> deleteNotice(@RequestBody @Valid NoticeDeleteRequestDto req){
+
+        noticeService.deleteNotice(req.getNoticeIdList());
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 삭제 되었습니다."));
+    }
 
 }

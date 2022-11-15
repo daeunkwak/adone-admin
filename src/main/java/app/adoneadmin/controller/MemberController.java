@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,27 +90,45 @@ public class MemberController {
 
 
     @Tag(name = "members")
-    @ApiOperation(value = "시공사 회원정보 수정 api",
-                  notes = "- companyRegisterImage, memberImage는 content-type=image/~,\n" +
-                          "- memberUpdateRequestDto는 content-type=application/json으로 보내주시면 됩니다.\n" +
-                          "- swagger에서는 인자별로 content-type 설정이 안돼서 swagger 내에서 테스트 하시면 415에러 발생합니다.")
+    @ApiOperation(value = "시공사 회원정보 수정 api")
     @PatchMapping(value = "/{memberId}")
     public ResponseEntity<CommonApiResult> updateMemberInfo(@PathVariable("memberId") Long memberId,
-                                                            @RequestPart(value = "memberUpdateRequestDto") MemberUpdateRequestDto req,
-                                                            @RequestPart(value = "companyRegisterImage") MultipartFile companyRegisterImage,
-                                                            @RequestPart(value = "memberImage") MultipartFile memberImage) throws IOException {
+                                                            @RequestBody @Valid MemberUpdateRequestDto req){
 
         log.info("MemberUpdateRequestDto :::::" + req);
-        log.info("companyRegisterImage ContentType ::::: " + companyRegisterImage.getContentType());
-        log.info("memberImage ContentType ::::: " + memberImage.getContentType());
 
         final MemberUpdateVo memberUpdateVo = new MemberUpdateVo();
 
         modelMapper.map(req, memberUpdateVo);
         memberService.updateMemberInfo(memberUpdateVo, memberId);
-        imageService.updateMemberImage(memberId, memberImage);
-        imageService.updateCompanyRegisterImage(memberId, companyRegisterImage);
         return ResponseEntity.ok(CommonApiResult.createOk("시공사 회원정보가 업데이트 되었습니다."));
     }
+
+
+    @Tag(name = "members")
+    @ApiOperation(value = "시공사 회원 업체등록 이미지 수정 api")
+    @PatchMapping(value = "/companyRegister/{memberId}")
+    public ResponseEntity<CommonApiResult> updateCompanyRegisterImage(@PathVariable("memberId") Long memberId,
+                                                                      @RequestPart(value = "companyRegisterImage") MultipartFile companyRegisterImage) throws IOException {
+
+        log.info("companyRegisterImage ContentType ::::: " + companyRegisterImage.getContentType());
+
+        imageService.updateCompanyRegisterImage(memberId, companyRegisterImage);
+        return ResponseEntity.ok(CommonApiResult.createOk("시공사 회원 업체등록 이미지가 업데이트 되었습니다."));
+    }
+
+
+    @Tag(name = "members")
+    @ApiOperation(value = "시공사 회원 대표이미지 수정 api")
+    @PatchMapping(value = "/represent/{memberId}")
+    public ResponseEntity<CommonApiResult> updateMemberImage(@PathVariable("memberId") Long memberId,
+                                                             @RequestPart(value = "representImage") MultipartFile representImage) throws IOException {
+
+        log.info("memberImage ContentType ::::: " + representImage.getContentType());
+
+        imageService.updateMemberImage(memberId, representImage);
+        return ResponseEntity.ok(CommonApiResult.createOk("시공사 대표이미지가 업데이트 되었습니다."));
+    }
+
 
 }
