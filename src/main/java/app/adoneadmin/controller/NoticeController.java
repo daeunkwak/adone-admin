@@ -3,6 +3,7 @@ package app.adoneadmin.controller;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.image.ImageDto;
+import app.adoneadmin.dto.member.response.MemberResponseDto;
 import app.adoneadmin.dto.notice.request.NoticeCreateRequestDto;
 import app.adoneadmin.dto.notice.response.NoticeCreateResponseDto;
 import app.adoneadmin.dto.notice.response.NoticeResponseDto;
@@ -79,6 +80,22 @@ public class NoticeController {
     }
 
     // 공지사항 검색 List<NoticeResponseDto>
+    @Tag(name = "notice")
+    @ApiOperation(value = "공지사항 검색 api")
+    @GetMapping(value="/search")
+    public ResponseEntity<List<NoticeResponseDto>> getNoticeSearch(@RequestParam("searchWord") String searchWord){
+
+        List<Notice> noticeList = noticeService.getNoticeSearch(searchWord);
+
+        List<NoticeResponseDto> result = new ArrayList<>();
+        for(Notice notice : noticeList){
+            if(notice.getNoticeFileList() != null){
+                result.add(new NoticeResponseDto(notice, notice.getNoticeFileList()));
+            }
+        }
+        return ResponseEntity.ok(result);
+    }
+
 
     // 공지사항 수정 NoticeResponseDto
 
