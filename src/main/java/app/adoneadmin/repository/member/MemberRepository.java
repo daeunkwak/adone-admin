@@ -1,7 +1,6 @@
 package app.adoneadmin.repository.member;
 
 import app.adoneadmin.domain.member.Member;
-import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryQuerydsl{
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Transactional
     @Modifying
