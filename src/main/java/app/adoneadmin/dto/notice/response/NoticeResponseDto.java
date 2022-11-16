@@ -45,7 +45,7 @@ public class NoticeResponseDto {
 
     public NoticeResponseDto(Notice notice){
         this.noticeId = notice.getNoticeId();
-        this.userName = notice.getNoticeName();
+        this.userName = notice.getMember().getUsername();
         this.noticeName = notice.getNoticeName();
         this.noticeContent = notice.getNoticeContent();
         this.regDateTime = notice.getRegDateTime();
@@ -62,7 +62,7 @@ public class NoticeResponseDto {
 
     public NoticeResponseDto(Notice notice, List<NoticeFile> noticeFileList){
         this.noticeId = notice.getNoticeId();
-        this.userName = notice.getNoticeName();
+        this.userName = notice.getMember().getUsername();
         this.noticeName = notice.getNoticeName();
         this.noticeContent = notice.getNoticeContent();
         this.regDateTime = notice.getRegDateTime();
@@ -87,10 +87,9 @@ public class NoticeResponseDto {
             }
         }
 
-
         return new NoticeResponseDtoBuilder()
             .noticeId(notice.getNoticeId())
-            .userName(notice.getNoticeName())
+            .userName(notice.getMember().getUsername())
             .noticeName(notice.getNoticeName())
             .noticeContent(notice.getNoticeContent())
             .regDateTime(notice.getRegDateTime())
