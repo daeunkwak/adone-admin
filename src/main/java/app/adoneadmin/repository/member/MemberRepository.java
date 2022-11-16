@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryQuerydsl{
+public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Transactional
     @Modifying

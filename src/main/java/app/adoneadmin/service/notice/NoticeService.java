@@ -58,8 +58,7 @@ public class NoticeService {
      */
     public Notice getNotice(Long noticeId) {
 
-        //return noticeRepository.getById(noticeId);
-        return noticeRepository.getNotice(noticeId);
+        return noticeRepository.getById(noticeId);
     }
 
     /**

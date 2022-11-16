@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,24 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 생성 api")
     @PostMapping(value="")
     public ResponseEntity<NoticeCreateResponseDto> createNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                                                @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles,
-                                                                @RequestPart(value = "req") NoticeRequestDto req) throws IOException {
-        log.info("NoticeCreateRequestDto ::: " + req);
-        log.info("noticeFiles ::: " + noticeFiles);
-        log.info("principalDetails ::: " + principalDetails);
+                                                                @RequestBody @Valid NoticeRequestDto req){
 
+        log.info("NoticeCreateRequestDto ::: " + req);
         Notice notice = noticeService.createNotice(principalDetails.getMember(), req.getNoticeContent(), req.getNoticeName());
-        fileService.uploadNoticeFiles(noticeFiles, notice.getNoticeId());
         return new ResponseEntity<>(NoticeCreateResponseDto.create(notice.getNoticeId()), HttpStatus.CREATED);
+    }
+
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 파일 업로드 api")
+    @PostMapping(value="/file/{noticeId}")
+    public ResponseEntity<CommonApiResult> createNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                            @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles,
+                                                            @PathVariable("noticeId") Long noticeId) throws IOException {
+
+        log.info("noticeFiles ::: " + noticeFiles);
+        fileService.uploadNoticeFiles(noticeFiles, noticeId);
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 첨부파일이 업로드 되었습니다."));
     }
 
 
@@ -102,24 +112,9 @@ public class NoticeController {
     @PatchMapping(value = "/{noticeId}")
     public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                         @PathVariable("noticeId") Long noticeId,
-                                                        @RequestPart(value = "req") NoticeRequestDto req){
+                                                        @RequestBody NoticeRequestDto req){
 
         noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
-        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
-    }
-
-
-    @Tag(name = "notification")
-    @ApiOperation(value = "공지사할 수정 api")
-    @PatchMapping(value = "/{noticeId}")
-    public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                                        @PathVariable("noticeId") Long noticeId,
-                                                        @RequestPart(value = "req") NoticeRequestDto req,
-                                                        @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
-        log.info("principalDetail ::::::: " + principalDetails);
-
-        Notice notice = noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
-        fileService.updateNoticeFiles(noticeFiles, notice.getNoticeId());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
     }
 
@@ -139,7 +134,7 @@ public class NoticeController {
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 삭제 api")
     @DeleteMapping("")
-    public ResponseEntity<CommonApiResult> deleteNotice(@RequestBody @Valid NoticeDeleteRequestDto req){
+    public ResponseEntity<CommonApiResult> deleteNotice(@RequestBody NoticeDeleteRequestDto req){
 
         noticeService.deleteNotice(req.getNoticeIdList());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 삭제 되었습니다."));
