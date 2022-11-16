@@ -7,7 +7,7 @@ import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import java.util.List;
 
 public interface MemberRepositoryQuerydsl {
-    MemberDetailResponseVo getContractorInfo(Long memberId);
+    //MemberDetailResponseVo getContractorInfo(Long memberId);
 
 
 }

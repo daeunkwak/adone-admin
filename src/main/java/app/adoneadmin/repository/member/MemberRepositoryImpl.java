@@ -19,17 +19,17 @@ public class MemberRepositoryImpl implements MemberRepositoryQuerydsl{
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public MemberDetailResponseVo getContractorInfo(Long memberId) {
-        return jpaQueryFactory.select(Projections.fields(MemberDetailResponseVo.class,
-                        member,
-                        companyRegisterImage,
-                        memberImage))
-                // .from(member)
-                .leftJoin(companyRegisterImage).on(companyRegisterImage.member.memberId.eq(member.memberId))
-                .leftJoin(memberImage).on(memberImage.member.memberId.eq(member.memberId))
-                .fetchOne();
-    }
+//    @Override
+//    public MemberDetailResponseVo getContractorInfo(Long memberId) {
+//        return jpaQueryFactory.select(Projections.fields(MemberDetailResponseVo.class,
+//                        member,
+//                        companyRegisterImage,
+//                        memberImage))
+//                // .from(member)
+//                .leftJoin(companyRegisterImage).on(companyRegisterImage.member.memberId.eq(member.memberId))
+//                .leftJoin(memberImage).on(memberImage.member.memberId.eq(member.memberId))
+//                .fetchOne();
+//    }
 
 //    @Override
 //    public List<Member> getMemberSearch(String searchWord) {
