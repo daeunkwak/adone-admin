@@ -29,7 +29,6 @@ public class NoticeService {
      */
     public Notice createNotice(Member member, String noticeContent, String noticeName) {
 
-        log.info("왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래왜그래");
         Notice notice = Notice.create(member, noticeName, noticeContent);
         return noticeRepository.save(notice);
     }
