@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,6 @@ public class NoticeController {
 
     private final NoticeService noticeService;
     private final FileService fileService;
-
 
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 생성 api")
@@ -116,6 +114,21 @@ public class NoticeController {
                                                         @RequestBody @Valid NoticeRequestDto req){
 
         noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
+    }
+
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사할 수정 api")
+    @PatchMapping(value = "/{noticeId}")
+    public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                        @PathVariable("noticeId") Long noticeId,
+                                                        @RequestPart(value = "req") NoticeRequestDto req,
+                                                        @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
+        log.info("principalDetail ::::::: " + principalDetails);
+
+        Notice notice = noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
+        fileService.updateNoticeFiles(noticeFiles, notice.getNoticeId());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
     }
 
