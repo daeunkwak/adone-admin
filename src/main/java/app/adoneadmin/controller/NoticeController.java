@@ -112,6 +112,18 @@ public class NoticeController {
     @PatchMapping(value = "/{noticeId}")
     public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                         @PathVariable("noticeId") Long noticeId,
+                                                        @RequestPart(value = "req") NoticeRequestDto req){
+
+        noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
+    }
+
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 수정 api")
+    @PatchMapping(value = "/{noticeId}")
+    public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                        @PathVariable("noticeId") Long noticeId,
                                                         @RequestBody @Valid NoticeRequestDto req){
 
         noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
