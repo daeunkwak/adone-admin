@@ -11,6 +11,9 @@ public interface NoticeFileRepository extends JpaRepository<NoticeFile, Long> {
     @Query("select nf.fileId from NoticeFile nf where nf.notice.noticeId =:noticeId")
     List<Long> findByNoticeId(@Param("noticeId") Long noticeId);
 
+    @Query("delete from NoticeFile nf where nf.notice.noticeId =:noticeId")
+    void deleteByNoticeId(Long noticeId);
+
 //    @Query("update File f set f.isDeleted")
 //    void updateIsDeleted(@Param("fileId") Long fileId);
 }

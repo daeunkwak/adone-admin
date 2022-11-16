@@ -1,5 +1,7 @@
 package app.adoneadmin.service.notice;
 
+import app.adoneadmin.domain.file.notice.NoticeFile;
+import app.adoneadmin.domain.file.notice.NoticeFileRepository;
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.global.exception.handler.CustomException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
     private final MemberRepository memberRepository;
+    private final NoticeFileRepository noticeFileRepository;
 
     /**
      * 공지사항 생성
@@ -91,7 +95,18 @@ public class NoticeService {
      */
     public void deleteNotice(List<Long> noticeIdList) {
 
+
         for(Long noticeId : noticeIdList){
+
+
+            //noticeFileRepository.deleteByNoticeId(noticeId);
+            Notice notice = findNoticeOrThrow(noticeId);
+
+            List<NoticeFile> noticeFileList = notice.getNoticeFileList();
+            for(NoticeFile noticeFile : noticeFileList){
+                noticeFileRepository.deleteById(noticeFile.getFileId());
+            }
+
             noticeRepository.deleteById(noticeId);
         }
     }
