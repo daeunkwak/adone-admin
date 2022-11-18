@@ -57,7 +57,7 @@ public class MemberDetailResponseDto {
         this.companyName = member.getCompanyName();
         this.representName = member.getRepresentName();
         this.companyRegisterNumber = member.getCompanyRegistrationNumber();
-        this.representPhone = member.getPhone();
+        this.representPhone = member.getRepresentPhone();
         this.fullAddress = member.getFullAddress();
         this.buildingAddress = member.getBuildingAddress();
         this.detailAddress = member.getDetailAddress();
