@@ -110,7 +110,7 @@ public class NoticeController {
 
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 수정 api")
-    @PatchMapping(value = "/{noticeId}")
+    @PatchMapping(value = "/update/{noticeId}")
     public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                         @PathVariable("noticeId") Long noticeId,
                                                         @RequestBody NoticeRequestDto req){
@@ -122,7 +122,7 @@ public class NoticeController {
 
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 첨부파일 수정 api")
-    @PatchMapping(value = "/file/{noticeId}")
+    @PostMapping(value = "/file/update/{noticeId}")
     public ResponseEntity<CommonApiResult> updateNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                             @PathVariable("noticeId") Long noticeId,
                                                             @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {

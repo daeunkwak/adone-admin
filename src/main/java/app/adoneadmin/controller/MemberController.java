@@ -107,7 +107,7 @@ public class MemberController {
 
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 업체등록 이미지 수정 api")
-    @PatchMapping(value = "/companyRegister/{memberId}")
+    @PostMapping(value = "/companyRegister/{memberId}")
     public ResponseEntity<CommonApiResult> updateCompanyRegisterImage(@PathVariable("memberId") Long memberId,
                                                                       @RequestPart(value = "companyRegisterImage") MultipartFile companyRegisterImage) throws IOException {
 
@@ -120,7 +120,7 @@ public class MemberController {
 
     @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 대표이미지 수정 api")
-    @PatchMapping(value = "/represent/{memberId}")
+    @PostMapping(value = "/represent/{memberId}")
     public ResponseEntity<CommonApiResult> updateMemberImage(@PathVariable("memberId") Long memberId,
                                                              @RequestPart(value = "representImage") MultipartFile representImage) throws IOException {
 
