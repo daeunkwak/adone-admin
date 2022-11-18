@@ -82,6 +82,8 @@ public class MemberService {
         Member member = findMemberOrThrow(memberId);
 
         member.setCompanyName(memberUpdateVo.getCompanyName());
+        member.setCompanyRegistrationNumber(memberUpdateVo.getCompanyRegisterNumber());
+        member.setRepresentPhone(memberUpdateVo.getRepresentPhone());
         member.setRepresentName(memberUpdateVo.getRepresentName());
         member.setBuildingAddress(memberUpdateVo.getBuildingAddress());
         member.setDetailAddress(memberUpdateVo.getDetailAddress());
