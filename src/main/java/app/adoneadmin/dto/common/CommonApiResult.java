@@ -27,5 +27,6 @@ public class CommonApiResult {
                 .message(message)
                 .build();
     }
+
 }
 
