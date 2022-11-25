@@ -1,21 +1,15 @@
 package app.adoneadmin.service.signboard;
 
-import app.adoneadmin.domain.signboard.SbFrontTruss;
-import app.adoneadmin.domain.signboard.SbHoldingFrame;
-import app.adoneadmin.domain.signboard.SbProtrudingFrame;
-import app.adoneadmin.dto.common.CommonApiResult;
-import app.adoneadmin.dto.signboard.request.StandardMaterialDeleteRequestDto;
-import app.adoneadmin.dto.signboard.request.StandardMaterialRequestDto;
+import app.adoneadmin.domain.signboard.*;
+import app.adoneadmin.domain.signboard.constant.MaterialType;
+import app.adoneadmin.dto.signboard.response.FrontFrameResponseDto;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
-import app.adoneadmin.repository.signboard.SbFrontFrameRepository;
-import app.adoneadmin.repository.signboard.SbFrontTrussRepository;
-import app.adoneadmin.repository.signboard.SbHoldingFrameRepository;
-import app.adoneadmin.repository.signboard.SbProtrudingFrameRepository;
+import app.adoneadmin.repository.signboard.*;
+import app.adoneadmin.vo.signboard.FrontFrameVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +25,8 @@ public class SignboardService {
     private final SbFrontTrussRepository sbFrontTrussRepository;
     private final SbHoldingFrameRepository sbHoldingFrameRepository;
     private final SbProtrudingFrameRepository sbProtrudingFrameRepository;
+    private final SbFrontFrameAluRepository sbFrontFrameAluRepository;
+    private final SbFrontFrameGalvaStanRepository sbFrontFrameGalvaStanRepository;
     private final ModelMapper modelMapper;
 
 
@@ -68,6 +64,31 @@ public class SignboardService {
     }
 
     /**
+     * 전면 프레임 항목 추가
+     */
+    public void createFrontFrame(String materialType, List<FrontFrameVo> frontFrameVoList){
+
+        switch (MaterialType.of(materialType)) {
+            case ALUMINUM:
+                for (FrontFrameVo vo : frontFrameVoList) {
+                    SbFrontFrameAlu alu = SbFrontFrameAlu.create(vo.getStandard(), vo.getCost());
+                    sbFrontFrameAluRepository.save(alu);
+                }
+            case GALVA:
+                for (FrontFrameVo vo : frontFrameVoList) {
+                    SbFrontFrameGalvaStan galva = SbFrontFrameGalvaStan.createGalva(vo.getStandard(), vo.getCost());
+                    sbFrontFrameGalvaStanRepository.save(galva);
+                }
+
+            case STAN:
+                for(FrontFrameVo vo : frontFrameVoList){
+                    SbFrontFrameGalvaStan stan = SbFrontFrameGalvaStan.createStan(vo.getStandard(), vo.getCost());
+                    sbFrontFrameGalvaStanRepository.save(stan);
+                }
+        }
+    }
+
+    /**
      * 전면 트러스 단가표 조회
      */
     public List<StandardMaterialVo> getFrontTruss() {
@@ -95,6 +116,25 @@ public class SignboardService {
         List<SbHoldingFrame> sbHoldingFrameList = sbHoldingFrameRepository.findAll();
         return sbHoldingFrameList.stream().map(sbHoldingFrame ->
                 modelMapper.map(sbHoldingFrame, StandardMaterialVo.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * 지주 프레임 단가표 조회
+     */
+    public List<FrontFrameVo> getFrontFrame(String materialType) {
+
+        switch (MaterialType.of(materialType)){
+            case ALUMINUM:
+                return sbFrontFrameAluRepository.findAll().stream().map(sbFrontFrameAlu ->
+                    modelMapper.map(sbFrontFrameAlu, FrontFrameVo.class)).collect(Collectors.toList());
+            case GALVA:
+                return sbFrontFrameGalvaStanRepository.findGalva().stream().map(sbFrontFrameGalva ->
+                        modelMapper.map(sbFrontFrameGalva, FrontFrameVo.class)).collect(Collectors.toList());
+            case STAN:
+                return sbFrontFrameGalvaStanRepository.findStan().stream().map(sbFrontFrameAlu ->
+                        modelMapper.map(sbFrontFrameAlu, FrontFrameVo.class)).collect(Collectors.toList());
+
+        }
     }
 
     /**

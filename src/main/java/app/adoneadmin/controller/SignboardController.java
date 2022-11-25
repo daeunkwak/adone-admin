@@ -1,11 +1,15 @@
 package app.adoneadmin.controller;
 
+import app.adoneadmin.domain.signboard.constant.MaterialType;
 import app.adoneadmin.dto.common.CommonApiResult;
+import app.adoneadmin.dto.signboard.request.FrontFrameRequestDto;
 import app.adoneadmin.dto.signboard.request.StandardMaterialDeleteRequestDto;
 import app.adoneadmin.dto.signboard.request.StandardMaterialRequestDto;
 import app.adoneadmin.dto.signboard.StandardMaterialDto;
+import app.adoneadmin.dto.signboard.response.FrontFrameResponseDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.service.signboard.SignboardService;
+import app.adoneadmin.vo.signboard.FrontFrameVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,15 +35,14 @@ public class SignboardController {
 
 
     @Tag(name = "signboards")
-    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 규격에 따른 단가 추가 api",
+    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 단가 추가 api",
                   notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
                           "- -1은 입력되지 않은 값들입니다.")
     @PostMapping(value="")
     public ResponseEntity<CommonApiResult> createStandardMaterial(@RequestBody @Valid List<StandardMaterialRequestDto> req,
                                                                   @RequestParam("signboardType") int signboardType){
 
-        List<StandardMaterialVo> standardMaterialVoList =
-                req.stream().map(dto -> modelMapper.map(dto, StandardMaterialVo.class)).collect(Collectors.toList());
+        List<StandardMaterialVo> standardMaterialVoList = req.stream().map(dto -> modelMapper.map(dto, StandardMaterialVo.class)).collect(Collectors.toList());
 
         switch (signboardType){
             case 1 :
@@ -55,7 +58,7 @@ public class SignboardController {
 
 
     @Tag(name = "signboards")
-    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 규격에 따른 단가표 조회 api",
+    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 단가표 조회 api",
                   notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
                           "- -1은 입력되지 않은 값들입니다.")
     @GetMapping(value="")
@@ -82,15 +85,14 @@ public class SignboardController {
 
 
     @Tag(name = "signboards")
-    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 규격에 따른 단가표 수정 api",
-            notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
-                    "- -1은 입력되지 않은 값들입니다.")
+    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 단가표 수정 api",
+                  notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
+                          "- -1은 입력되지 않은 값들입니다.")
     @PatchMapping(value="")
     public ResponseEntity<CommonApiResult> updateStandardMaterial(@RequestBody @Valid List<StandardMaterialDto> req,
                                                                   @RequestParam("signboardType") int signboardType){
 
-        List<StandardMaterialVo> standardMaterialVoList =
-                req.stream().map(dto -> modelMapper.map(dto, StandardMaterialVo.class)).collect(Collectors.toList());
+        List<StandardMaterialVo> standardMaterialVoList = req.stream().map(dto -> modelMapper.map(dto, StandardMaterialVo.class)).collect(Collectors.toList());
 
         switch (signboardType){
             case 1 :
@@ -106,13 +108,14 @@ public class SignboardController {
 
 
     @Tag(name = "signboards")
-    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 규격에 따른 단가표 삭제 api",
-            notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
-                    "- -1은 입력되지 않은 값들입니다.")
+    @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 단가표 삭제 api",
+                  notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" +
+                          "- -1은 입력되지 않은 값들입니다.")
     @DeleteMapping(value="")
     public ResponseEntity<CommonApiResult> deleteStandardMaterial(@RequestBody @Valid StandardMaterialDeleteRequestDto req,
                                                                   @RequestParam("signboardType") int signboardType){
 
+        // TODO : 음...
         switch (signboardType){
             case 1 :
                 for(long id : req.getIdList()) {
@@ -132,5 +135,53 @@ public class SignboardController {
     }
 
 
+    @Tag(name = "signboards")
+    @ApiOperation(value = "전면 프레임 단가 추가 api",
+                  notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
+    @PostMapping(value="/front-frame")
+    public ResponseEntity<CommonApiResult> createFrontFrame(@RequestBody @Valid List<FrontFrameRequestDto> req,
+                                                            @RequestParam("materialType") String materialType){
+
+        List<FrontFrameVo> frontFrameVoList = req.stream().map(dto -> modelMapper.map(dto, FrontFrameVo.class)).collect(Collectors.toList());
+        signboardService.createFrontFrame(materialType, frontFrameVoList);
+
+        return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
+    }
+
+    @Tag(name = "signboards")
+    @ApiOperation(value = "전면 프레임 단가 조회 api",
+            notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S\n" +
+                    "- -1은 입력되지 않은 값들입니다.")
+    @PostMapping(value="/front-frame")
+    public ResponseEntity<FrontFrameResponseDto> getFrontFrame(@RequestParam("materialType") String materialType){
+
+
+        signboardService.getFrontFrame(materialType);
+
+        throw new CustomException("잘못된 signboardType 입니다.");
+
+
+
+
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

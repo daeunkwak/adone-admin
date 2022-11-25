@@ -14,29 +14,23 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class SbFrontFrame {
+public class SbFrontFrameAlu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private boolean galva;
+    private String standard;
 
-    private boolean stan;
+    private int aluminum;
 
-    private boolean aluminum;
 
-    private int hqlFrame;
+    public static SbFrontFrameAlu create(String standard, int aluminum){
 
-    private int indirectLightFrame;
-
-    private int specialFrame;
-
-    private int normalFrame;
-
-    private int lighting;
-
-    private int nonLighting;
-
+        return SbFrontFrameAlu.builder()
+                .standard(standard)
+                .aluminum(aluminum)
+                .build();
+    }
 
 }
