@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "규격/재질에 따른 단가 테이블 조회, 수정 객체")
 public class StandardMaterialDto {
 
-    @ApiModelProperty(value = "단가 칼럼 id")
+    @ApiModelProperty(value = "단가 id")
     private long id;
 
     @ApiModelProperty(value = "규격")

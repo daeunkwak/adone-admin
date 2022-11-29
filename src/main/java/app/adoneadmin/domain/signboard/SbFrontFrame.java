@@ -20,23 +20,54 @@ public class SbFrontFrame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private boolean galva;
+    private String standard;
 
-    private boolean stan;
+    private int galva;
 
-    private boolean aluminum;
+    private int stan;
 
-    private int hqlFrame;
+    private int alu;
 
-    private int indirectLightFrame;
+    public static SbFrontFrame createGalva(String standard, int cost) {
 
-    private int specialFrame;
+        return SbFrontFrame.builder()
+                .standard(standard)
+                .galva(cost)
+                .stan(-1)
+                .alu(-1)
+                .build();
+    }
 
-    private int normalFrame;
+    public static SbFrontFrame createStan(String standard, int cost) {
 
-    private int lighting;
+        return SbFrontFrame.builder()
+                .standard(standard)
+                .galva(-1)
+                .stan(cost)
+                .alu(-1)
+                .build();
+    }
 
-    private int nonLighting;
+    public static SbFrontFrame createAlu(String standard, int cost) {
 
+        return SbFrontFrame.builder()
+                .standard(standard)
+                .galva(-1)
+                .stan(-1)
+                .alu(cost)
+                .build();
+    }
 
+    public void updateGalva(int cost){
+        this.galva = cost;
+    }
+
+    public void updateAlu(int cost){
+        this.alu = cost;
+    }
+
+    public void updateStan(int cost){
+        this.stan = cost;
+    }
 }
+
