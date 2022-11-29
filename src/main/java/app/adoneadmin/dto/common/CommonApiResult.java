@@ -28,5 +28,12 @@ public class CommonApiResult {
                 .build();
     }
 
+    public static CommonApiResult OK(String message){
+        return CommonApiResult.builder()
+                .code(HttpStatus.OK.value())
+                .message(message)
+                .build();
+    }
+
 }
 
