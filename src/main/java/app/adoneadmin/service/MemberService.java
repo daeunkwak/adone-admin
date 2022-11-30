@@ -1,4 +1,4 @@
-package app.adoneadmin.service.member;
+package app.adoneadmin.service;
 
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.member.constant.MemberRole;

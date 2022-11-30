@@ -52,18 +52,34 @@ public class MemberResponseDto {
     }
 
     @Getter
-    @ApiModel(description = "회원 리스트 조회 반환 객체")
-    public static class GroupById{
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ApiModel(description = "간단한 회원 조회 반환 객체")
+    public static class SimpleMemberResponse {
 
-        @ApiModelProperty(value = "memberId : {MemberResponseDto}")
-        private final Map<Long, MemberResponseDto> memberResponseDtoGroupById;
+        @ApiModelProperty(value = "상호명", example = "모협조")
+        private String companyName;
 
-        public GroupById(List<MemberResponseDto> memberResponseDtoList){
-            Map<Long, MemberResponseDto> result = new HashMap<>();
-            for(MemberResponseDto memberResponseDto : memberResponseDtoList){
-                result.put(memberResponseDto.getMemberId(), memberResponseDto);
-            }
-            this.memberResponseDtoGroupById = result;
+        @ApiModelProperty(value = "성명", example = "최원서")
+        private String representName;
+
+        @ApiModelProperty(value = "사업자등록번호", example = "123123")
+        private String companyRegisterNumber;
+
+        @ApiModelProperty(value = "전화번호", example = "010-2222-2222")
+        private String representPhone;
+
+        @ApiModelProperty(value = "주소", example = "노원구 인덕대 017호")
+        private String fullAddress;
+
+        public SimpleMemberResponse(Member member){
+            this.companyName = member.getCompanyName();
+            this.representName = member.getRepresentName();
+            this.companyRegisterNumber = member.getCompanyRegistrationNumber();
+            this.representPhone = member.getRepresentPhone();
+            this.fullAddress = member.getFullAddress();
         }
     }
 

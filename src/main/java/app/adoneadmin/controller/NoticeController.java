@@ -1,16 +1,14 @@
 package app.adoneadmin.controller;
 
-import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.dto.common.CommonApiResult;
-import app.adoneadmin.dto.notice.request.NoticeDeleteRequestDto;
+import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.dto.notice.request.NoticeRequestDto;
 import app.adoneadmin.dto.notice.response.NoticeCreateResponseDto;
 import app.adoneadmin.dto.notice.response.NoticeResponseDto;
 import app.adoneadmin.security.auth.PrincipalDetails;
-import app.adoneadmin.service.file.FileService;
-import app.adoneadmin.service.notice.NoticeService;
-import app.adoneadmin.vo.member.MemberUpdateVo;
+import app.adoneadmin.service.FileService;
+import app.adoneadmin.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -135,9 +133,9 @@ public class NoticeController {
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 삭제 api")
     @DeleteMapping("")
-    public ResponseEntity<CommonApiResult> deleteNotice(@RequestBody NoticeDeleteRequestDto req){
+    public ResponseEntity<CommonApiResult> deleteNotice(@RequestBody DeleteRequestDto req){
 
-        noticeService.deleteNotice(req.getNoticeIdList());
+        noticeService.deleteNotice(req.getIdList());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 삭제 되었습니다."));
     }
 

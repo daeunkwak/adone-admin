@@ -1,8 +1,8 @@
-package app.adoneadmin.service.signboard;
+package app.adoneadmin.service;
 
 import app.adoneadmin.domain.signboard.*;
 import app.adoneadmin.domain.signboard.constant.MaterialType;
-import app.adoneadmin.dto.signboard.SignboardDeleteRequestDto;
+import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.repository.signboard.*;
@@ -270,7 +270,7 @@ public class SignboardService {
     /**
      * 전면 프레임 단가 삭제
      */
-    public void deleteFrontFrame(SignboardDeleteRequestDto req, String materialType) {
+    public void deleteFrontFrame(DeleteRequestDto req, String materialType) {
 
         switch (MaterialType.of(materialType)){
             case ALUMINUM:

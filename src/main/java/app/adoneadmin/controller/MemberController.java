@@ -7,8 +7,8 @@ import app.adoneadmin.dto.member.request.MemberUpdateRequestDto;
 import app.adoneadmin.dto.member.response.MemberAuthResponseDto;
 import app.adoneadmin.dto.member.response.MemberDetailResponseDto;
 import app.adoneadmin.dto.member.response.MemberResponseDto;
-import app.adoneadmin.service.image.ImageService;
-import app.adoneadmin.service.member.MemberService;
+import app.adoneadmin.service.ImageService;
+import app.adoneadmin.service.MemberService;
 import app.adoneadmin.vo.member.MemberDetailResponseVo;
 import app.adoneadmin.vo.member.MemberUpdateVo;
 import io.swagger.annotations.ApiOperation;
@@ -111,8 +111,6 @@ public class MemberController {
     public ResponseEntity<CommonApiResult> updateCompanyRegisterImage(@PathVariable("memberId") Long memberId,
                                                                       @RequestPart(value = "companyRegisterImage") MultipartFile companyRegisterImage) throws IOException {
 
-        log.info("companyRegisterImage ContentType ::::: " + companyRegisterImage.getContentType());
-
         imageService.updateCompanyRegisterImage(memberId, companyRegisterImage);
         return ResponseEntity.ok(CommonApiResult.createOk("시공사 회원 업체등록 이미지가 업데이트 되었습니다."));
     }
@@ -123,8 +121,6 @@ public class MemberController {
     @PostMapping(value = "/represent/{memberId}")
     public ResponseEntity<CommonApiResult> updateMemberImage(@PathVariable("memberId") Long memberId,
                                                              @RequestPart(value = "representImage") MultipartFile representImage) throws IOException {
-
-        log.info("memberImage ContentType ::::: " + representImage.getContentType());
 
         imageService.updateMemberImage(memberId, representImage);
         return ResponseEntity.ok(CommonApiResult.createOk("시공사 대표이미지가 업데이트 되었습니다."));

@@ -1,19 +1,11 @@
 package app.adoneadmin.controller;
 
-import app.adoneadmin.domain.member.Member;
-import app.adoneadmin.dto.auth.SignupDto;
-import app.adoneadmin.service.member.MemberService;
-import io.swagger.annotations.ApiOperation;
+import app.adoneadmin.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @Tag(name = "auth", description = "회원가입, 로그인, 로그아웃 API")
 @RequestMapping("/api/auth")
