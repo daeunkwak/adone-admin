@@ -1,4 +1,4 @@
-package app.adoneadmin.service.image;
+package app.adoneadmin.service;
 
 import app.adoneadmin.domain.image.Image;
 import app.adoneadmin.domain.image.companyRegister.CompanyRegisterImage;

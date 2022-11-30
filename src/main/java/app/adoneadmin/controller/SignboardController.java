@@ -1,13 +1,13 @@
 package app.adoneadmin.controller;
 
 import app.adoneadmin.dto.common.CommonApiResult;
-import app.adoneadmin.dto.signboard.SignboardDeleteRequestDto;
+import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.dto.signboard.request.FrontFrameRequestDto;
 import app.adoneadmin.dto.signboard.request.StandardMaterialRequestDto;
 import app.adoneadmin.dto.signboard.StandardMaterialDto;
 import app.adoneadmin.dto.signboard.FrontFrameDto;
 import app.adoneadmin.global.exception.handler.CustomException;
-import app.adoneadmin.service.signboard.SignboardService;
+import app.adoneadmin.service.SignboardService;
 import app.adoneadmin.vo.signboard.FrontFrameVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import io.swagger.annotations.ApiOperation;
@@ -109,7 +109,7 @@ public class SignboardController {
     @ApiOperation(value = "전면 트러스/돌출 프레임/지주 프레임 단가표 삭제 api",
                   notes = "- signboardType <-> 전면 트러스 : 1, 돌출 프레임 : 2, 지주 프레임 : 3\n" + "- -1은 입력되지 않은 값들입니다.")
     @DeleteMapping(value="")
-    public ResponseEntity<CommonApiResult> deleteStandardMaterial(@RequestBody @Valid SignboardDeleteRequestDto req,
+    public ResponseEntity<CommonApiResult> deleteStandardMaterial(@RequestBody @Valid DeleteRequestDto req,
                                                                   @RequestParam("signboardType") int signboardType){
 
         // TODO : 음..
@@ -175,7 +175,7 @@ public class SignboardController {
     @ApiOperation(value = "전면 프레임 단가 삭제 api",
             notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
     @DeleteMapping(value="/front-frame")
-    public ResponseEntity<CommonApiResult> deleteFrontFrame(@RequestBody @Valid SignboardDeleteRequestDto req,
+    public ResponseEntity<CommonApiResult> deleteFrontFrame(@RequestBody @Valid DeleteRequestDto req,
                                                             @RequestParam("materialType") String materialType){
 
         signboardService.deleteFrontFrame(req, materialType);

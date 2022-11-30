@@ -1,6 +1,7 @@
 package app.adoneadmin.domain.member;
 
 import app.adoneadmin.domain.base.BaseTimeEntity;
+import app.adoneadmin.domain.businessCategory.BusinessCategory;
 import app.adoneadmin.domain.image.companyRegister.CompanyRegisterImage;
 import app.adoneadmin.domain.image.member.MemberImage;
 import app.adoneadmin.domain.member.constant.MemberRole;
@@ -11,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Builder
 @AllArgsConstructor
 @Getter
 @Setter
@@ -37,6 +37,10 @@ public class Member extends BaseTimeEntity {
     private String storeLocation;
 
     private String companyName; // 상호자등록증 상호명
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "business_category_id")
+    private BusinessCategory businessCategory;
 
     private String companyRegistrationNumber;   // 사업자등록번호
 

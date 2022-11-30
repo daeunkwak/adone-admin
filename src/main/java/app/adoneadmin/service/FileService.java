@@ -1,4 +1,4 @@
-package app.adoneadmin.service.file;
+package app.adoneadmin.service;
 
 import app.adoneadmin.domain.file.File;
 import app.adoneadmin.domain.file.notice.NoticeFile;

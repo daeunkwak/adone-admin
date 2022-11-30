@@ -23,13 +23,13 @@ public class SignupDto {
     @NotNull
     private String username;
 
-    public Member toEntity(){
-
-        return Member.builder()
-                .loginId(this.loginId)
-                .password(this.password)
-                .username(this.username)
-                .build();
-    }
+//    public Member toEntity(){
+//
+//        return Member.builder()
+//                .loginId(this.loginId)
+//                .password(this.password)
+//                .username(this.username)
+//                .build();
+//    }
 }
 
