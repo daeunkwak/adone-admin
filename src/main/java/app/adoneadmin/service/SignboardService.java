@@ -73,20 +73,42 @@ public class SignboardService {
         switch (MaterialType.of(materialType)) {
             case ALUMINUM:
                 for (FrontFrameVo vo : frontFrameVoList) {
-                    SbFrontFrame alu = SbFrontFrame.createAlu(vo.getStandard(), vo.getCost());
-                    sbFrontFrameRepository.save(alu);
+
+                    SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
+
+                    // standard 이미 있는 경우 -> 기존 레코드에 추가
+                    if(frontFrame != null){
+                        frontFrame.updateAlu(vo.getCost());
+                    } else {     // 없는 경우 -> 새로 생성
+                        SbFrontFrame alu = SbFrontFrame.createAlu(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(alu);
+                    }
                 }
                 break;
+
             case GALVA:
                 for (FrontFrameVo vo : frontFrameVoList) {
-                    SbFrontFrame galva = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
-                    sbFrontFrameRepository.save(galva);
+                    SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
+
+                    if(frontFrame != null){
+                        frontFrame.updateGalva(vo.getCost());
+                    } else {
+                        SbFrontFrame galva = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(galva);
+                    }
                 }
                 break;
+
             case STAN:
                 for(FrontFrameVo vo : frontFrameVoList){
-                    SbFrontFrame stan = SbFrontFrame.createStan(vo.getStandard(), vo.getCost());
-                    sbFrontFrameRepository.save(stan);
+                    SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
+
+                    if(frontFrame != null){
+                        frontFrame.updateStan(vo.getCost());
+                    } else {
+                        SbFrontFrame stan = SbFrontFrame.createStan(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(stan);
+                    }
                 }
                 break;
         }
