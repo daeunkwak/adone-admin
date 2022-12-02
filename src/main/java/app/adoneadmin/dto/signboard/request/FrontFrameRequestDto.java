@@ -2,9 +2,7 @@ package app.adoneadmin.dto.signboard.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +15,20 @@ public class FrontFrameRequestDto {
 
     @ApiModelProperty(value = "가격", example = "21000")
     private int cost;
+
+    @Getter
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ApiModel(description = "전면 프레임 수정 요청 객체")
+    public static class Update{
+
+        @ApiModelProperty(value = "단가 id", example = "1")
+        private long id;
+
+        @ApiModelProperty(value = "가격", example = "21000")
+        private int cost;
+
+    }
 }

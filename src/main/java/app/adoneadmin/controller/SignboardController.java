@@ -162,7 +162,7 @@ public class SignboardController {
     @ApiOperation(value = "전면 프레임 단가 수정 api",
             notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
     @PatchMapping(value="/front-frame")
-    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<FrontFrameDto> req,
+    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<FrontFrameRequestDto.Update> req,
                                                                 @RequestParam("materialType") String materialType){
 
         List<FrontFrameVo> frontFrameVos = req.stream().map(dto -> modelMapper.map(dto, FrontFrameVo.class)).collect(Collectors.toList());

@@ -204,7 +204,7 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbFrontTruss sbFrontTruss = sbFrontTrussRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-            sbFrontTruss.setStandard(vo.getStandard());
+           // sbFrontTruss.setStandard(vo.getStandard());
             sbFrontTruss.setAluminum(vo.getAluminum());
             sbFrontTruss.setGalva(vo.getGalva());
             sbFrontTruss.setStan(vo.getStan());
@@ -219,7 +219,7 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbProtrudingFrame sbProtrudingFrame = sbProtrudingFrameRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-            sbProtrudingFrame.setStandard(vo.getStandard());
+           // sbProtrudingFrame.setStandard(vo.getStandard());
             sbProtrudingFrame.setAluminum(vo.getAluminum());
             sbProtrudingFrame.setGalva(vo.getGalva());
             sbProtrudingFrame.setStan(vo.getStan());
@@ -234,7 +234,7 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbHoldingFrame sbHoldingFrame = sbHoldingFrameRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-            sbHoldingFrame.setStandard(vo.getStandard());
+            //sbHoldingFrame.setStandard(vo.getStandard());
             sbHoldingFrame.setAluminum(vo.getAluminum());
             sbHoldingFrame.setGalva(vo.getGalva());
             sbHoldingFrame.setStan(vo.getStan());
