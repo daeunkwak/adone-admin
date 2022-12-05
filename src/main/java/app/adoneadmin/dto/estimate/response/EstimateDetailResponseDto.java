@@ -125,7 +125,7 @@ public class EstimateDetailResponseDto {
             this.desiredDate = bidingEstimate.getRequestEstimate().getDesiredDate();
             this.floor = bidingEstimate.getRequestEstimate().getFloor();
             this.isDemolish = bidingEstimate.getRequestEstimate().getIsDemolish();
-            this.requestedContent = bidingEstimate.getRequestEstimate().getRequestedContent();
+            this.requestedContent = bidingEstimate.getRequestEstimate().getEtcContent();
             this.referenceImageDtoList = referenceImageDtoList;
         }
 

@@ -120,6 +120,7 @@ public class SignboardService {
     public List<StandardMaterialVo> getFrontTruss() {
 
         List<SbFrontTruss> sbFrontTrussList = sbFrontTrussRepository.findAll();
+        log.info("trusssssssssssssssssssss ::::: " + sbFrontTrussList);
         return sbFrontTrussList.stream().map(sbFrontTruss ->
                 modelMapper.map(sbFrontTruss, StandardMaterialVo.class)).collect(Collectors.toList());
     }

@@ -36,7 +36,7 @@ public class RequestEstimate extends BaseTimeEntity {
     @Column(nullable = false)
     private String floor;
 
-    private String requestedContent;   // 요청사항
+    private String etcContent;   // 요청사항
 
     @Builder.Default
     @Column(nullable = false)
