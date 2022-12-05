@@ -1,8 +1,10 @@
 package app.adoneadmin.controller;
 
+import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.notice.Notice;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
+import app.adoneadmin.dto.file.FileDto;
 import app.adoneadmin.dto.notice.request.NoticeRequestDto;
 import app.adoneadmin.dto.notice.response.NoticeCreateResponseDto;
 import app.adoneadmin.dto.notice.response.NoticeResponseDto;
@@ -57,6 +59,9 @@ public class NoticeController {
                                                             @PathVariable("noticeId") Long noticeId) throws IOException {
 
         log.info("noticeFiles ::: " + noticeFiles);
+        for(MultipartFile multipartFile : noticeFiles){
+            log.info("contentType ::::::::: " + multipartFile.getContentType());
+        }
         fileService.uploadNoticeFiles(noticeFiles, noticeId);
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 첨부파일이 업로드 되었습니다."));
     }
@@ -71,9 +76,7 @@ public class NoticeController {
 
         List<NoticeResponseDto> result = new ArrayList<>();
         for(Notice notice : noticeList){
-            if(notice.getNoticeFileList() != null){
-                result.add(new NoticeResponseDto(notice, notice.getNoticeFileList()));
-            }
+            result.add(new NoticeResponseDto(notice));
         }
         return ResponseEntity.ok(result);
     }
@@ -85,7 +88,16 @@ public class NoticeController {
     public ResponseEntity<NoticeResponseDto> getNotice(@PathVariable("noticeId") Long noticeId){
 
         Notice notice = noticeService.getNotice(noticeId);
-        return ResponseEntity.ok(NoticeResponseDto.from(notice));
+
+
+        List<FileDto> noticeFileDtos = new ArrayList<>();
+        if(!notice.getNoticeFileList().isEmpty()){
+            for(NoticeFile noticeFile : notice.getNoticeFileList()){
+                noticeFileDtos.add(new FileDto(noticeFile.getFileId(), noticeFile.getFileUrl()));
+            }
+        }
+
+        return ResponseEntity.ok(NoticeResponseDto.from(notice, noticeFileDtos));
     }
 
 
@@ -99,7 +111,7 @@ public class NoticeController {
         List<NoticeResponseDto> result = new ArrayList<>();
         for(Notice notice : noticeList){
             if(notice.getNoticeFileList() != null){
-                result.add(new NoticeResponseDto(notice, notice.getNoticeFileList()));
+                result.add(new NoticeResponseDto(notice));
             }
         }
         return ResponseEntity.ok(result);
@@ -121,12 +133,24 @@ public class NoticeController {
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 첨부파일 수정 api")
     @PostMapping(value = "/file/update/{noticeId}")
+    @Deprecated
     public ResponseEntity<CommonApiResult> updateNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                             @PathVariable("noticeId") Long noticeId,
                                                             @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
 
         fileService.updateNoticeFiles(principalDetails.getMember().getMemberId(), noticeFiles, noticeId);
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항 첨부파일이 업데이트 되었습니다."));
+    }
+
+    @Tag(name = "notification")
+    @ApiOperation(value = "공지사항 첨부파일 삭제 api")
+    @DeleteMapping(value = "/file/{noticeId}")
+    public ResponseEntity<CommonApiResult> deleteNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                                            @PathVariable("noticeId") Long noticeId,
+                                                            @RequestBody DeleteRequestDto req) throws IOException {
+
+        fileService.deleteNoticeFiles(noticeId, req);
+        return ResponseEntity.ok(CommonApiResult.createOk("공지사항 첨부파일이 삭제 되었습니다."));
     }
 
 

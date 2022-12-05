@@ -2,6 +2,7 @@ package app.adoneadmin.dto.notice.response;
 
 import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.notice.Notice;
+import app.adoneadmin.dto.file.FileDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -41,7 +42,8 @@ public class NoticeResponseDto {
     private LocalDateTime regDateTime;
 
     @ApiModelProperty(value = "공지사항 파일 리스트")
-    private List<String> noticeFileList;
+    private List<FileDto> noticeFileList;
+
 
     public NoticeResponseDto(Notice notice){
         this.noticeId = notice.getNoticeId();
@@ -50,42 +52,9 @@ public class NoticeResponseDto {
         this.noticeContent = notice.getNoticeContent();
         this.regDateTime = notice.getRegDateTime();
 
-        this.noticeFileList = new ArrayList<>();
-
-        List<NoticeFile> noticeFileList = notice.getNoticeFileList();
-        if(!noticeFileList.isEmpty()){
-            for(NoticeFile noticeFile : noticeFileList){
-                this.noticeFileList.add(noticeFile.getFileUrl());
-            }
-        }
     }
 
-    public NoticeResponseDto(Notice notice, List<NoticeFile> noticeFileList){
-        this.noticeId = notice.getNoticeId();
-        this.userName = notice.getMember().getUsername();
-        this.noticeName = notice.getNoticeName();
-        this.noticeContent = notice.getNoticeContent();
-        this.regDateTime = notice.getRegDateTime();
-
-        this.noticeFileList = new ArrayList<>();
-
-        if(!noticeFileList.isEmpty()){
-            for(NoticeFile noticeFile : noticeFileList){
-                this.noticeFileList.add(noticeFile.getFileUrl());
-            }
-        }
-
-    }
-
-    public static NoticeResponseDto from(Notice notice){
-
-        List<String> fileUrlList = new ArrayList<>();
-        List<NoticeFile> noticeFileList = notice.getNoticeFileList();
-        if(!noticeFileList.isEmpty()){
-            for(NoticeFile noticeFile : noticeFileList){
-                fileUrlList.add(noticeFile.getFileUrl());
-            }
-        }
+    public static NoticeResponseDto from(Notice notice, List<FileDto> noticeFileList){
 
         return new NoticeResponseDtoBuilder()
             .noticeId(notice.getNoticeId())
@@ -93,7 +62,7 @@ public class NoticeResponseDto {
             .noticeName(notice.getNoticeName())
             .noticeContent(notice.getNoticeContent())
             .regDateTime(notice.getRegDateTime())
-                .noticeFileList(fileUrlList)
+                .noticeFileList(noticeFileList)
                 .build();
     }
 
