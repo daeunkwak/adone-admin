@@ -16,8 +16,8 @@ public class StandardMaterialDto {
     @ApiModelProperty(value = "단가 id")
     private long id;
 
-//    @ApiModelProperty(value = "규격")
-//    private int standard;
+    @ApiModelProperty(value = "규격")
+    private int standard;
 
     @ApiModelProperty(value = "알루미늄 단가")
     private int aluminum;
@@ -32,7 +32,7 @@ public class StandardMaterialDto {
     public StandardMaterialDto(StandardMaterialVo standardMaterialVo){
 
         this.id = standardMaterialVo.getId();
-        //this.standard = standardMaterialVo.getStandard();
+        this.standard = standardMaterialVo.getStandard();
         this.aluminum = standardMaterialVo.getAluminum();
         this.galva = standardMaterialVo.getGalva();
         this.stan = standardMaterialVo.getStan();
