@@ -1,4 +1,4 @@
-package app.adoneadmin.domain.signboard.constant;
+package app.adoneadmin.domain.constant;
 
 import app.adoneadmin.global.exception.handler.CustomException;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,9 @@ public enum MaterialType {
 
     ALUMINUM("A", "알루미늄"),
     GALVA("G", "갈바"),
-    STAN("S", "스텐")
+    STAN("S", "스텐"),
+    INTEGRAL("I", "일체형"),
+    EPOXY("E", "에폭시")
     ;
 
     private String alias;

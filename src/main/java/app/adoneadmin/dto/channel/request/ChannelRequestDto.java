@@ -15,12 +15,21 @@ import lombok.NoArgsConstructor;
 public class ChannelRequestDto {
 
     @ApiModelProperty(value = "규격", example = "300 ENG")
-    private String standard;
-
-    @ApiModelProperty(value = "가격", example = "21000")
-    private int cost;
+    private String option;
 
     @ApiModelProperty(value = "LED", example = "77")
     private int led;
+
+    private int depth80;
+
+    private int depth100;
+
+//    private int depth35;
+//
+//    private int depth60;
+//
+//    private int depth_50;
+//
+//    private int depth_120;
 
 }

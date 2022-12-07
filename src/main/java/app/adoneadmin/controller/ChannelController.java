@@ -1,5 +1,6 @@
 package app.adoneadmin.controller;
 
+import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.signboard.request.FrontFrameRequestDto;
 import app.adoneadmin.service.ChannelService;
@@ -27,18 +28,18 @@ public class ChannelController {
     private final ChannelService channelService;
     private final ModelMapper modelMapper;
 
-    @Tag(name = "signboards/front-light", description = "채널 - 전광 채널 단가 api")
+    @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
     @ApiOperation(value = "전광 채널 단가 추가 api")
     @PostMapping(value="/front-light")
-    public ResponseEntity<?> createFrontLight(@RequestBody @Valid List<FrontFrameRequestDto> req,
+    public ResponseEntity<?> createFrontLight(@RequestBody @Valid List<ChannelRequestDto> req,
                                               @RequestParam("materialType") String materialType){
 
         List<FrontLightVo> frontFrameVos = req.stream().map(dto -> modelMapper.map(dto, FrontLightVo.class)).collect(Collectors.toList());
-        //channelService.createFrontLight(materialType, frontFrameVos);
+
+        channelService.createFrontLight(materialType, frontFrameVos);
 
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
-
 
 
 
