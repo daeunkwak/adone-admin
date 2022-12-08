@@ -1,7 +1,7 @@
 package app.adoneadmin.service;
 
 import app.adoneadmin.domain.signboard.*;
-import app.adoneadmin.domain.signboard.constant.MaterialType;
+import app.adoneadmin.domain.constant.MaterialType;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Transactional
 @RequiredArgsConstructor
@@ -81,6 +80,7 @@ public class SignboardService {
                         frontFrame.updateAlu(vo.getCost());
                     } else {     // 없는 경우 -> 새로 생성
                         SbFrontFrame alu = SbFrontFrame.createAlu(vo.getStandard(), vo.getCost());
+                        log.info("loggggggggggggggg :::::::::: " + alu);
                         sbFrontFrameRepository.save(alu);
                     }
                 }
@@ -120,6 +120,7 @@ public class SignboardService {
     public List<StandardMaterialVo> getFrontTruss() {
 
         List<SbFrontTruss> sbFrontTrussList = sbFrontTrussRepository.findAll();
+        log.info("trusssssssssssssssssssss ::::: " + sbFrontTrussList);
         return sbFrontTrussList.stream().map(sbFrontTruss ->
                 modelMapper.map(sbFrontTruss, StandardMaterialVo.class)).collect(Collectors.toList());
     }
@@ -252,16 +253,19 @@ public class SignboardService {
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateAlu(vo.getCost());
                 }
+                break;
 
             case GALVA:
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateGalva(vo.getCost());
                 }
+                break;
 
             case STAN:
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateStan(vo.getCost());
                 }
+                break;
         }
     }
 
@@ -299,19 +303,19 @@ public class SignboardService {
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateAlu(-1);
-                }
+                } break;
 
             case GALVA:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateGalva(-1);
-                }
+                } break;
 
             case STAN:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateStan(-1);
-                }
+                } break;
         }
     }
 
