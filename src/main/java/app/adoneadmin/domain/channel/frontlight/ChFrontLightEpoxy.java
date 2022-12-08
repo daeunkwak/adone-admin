@@ -21,17 +21,23 @@ public class ChFrontLightEpoxy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String option;
+    private String standard;
 
     private int led;
 
-    private int depth_35;
+    private int depth35;
 
     public static ChFrontLightEpoxy create(FrontLightVo vo){
 
         return new ChFrontLightEpoxyBuilder()
-//                .option(vo.getOption())
-//                .depth_35(vo.getDepth_35())
+                .standard(vo.getStandard())
+                .depth35(vo.getDepth35())
                 .build();
+    }
+
+    public void updateFrontLightEpoxy(FrontLightVo vo) {
+            this.led = vo.getLed();
+            this.depth35 = vo.getDepth35();
+
     }
 }

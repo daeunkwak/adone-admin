@@ -253,16 +253,19 @@ public class SignboardService {
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateAlu(vo.getCost());
                 }
+                break;
 
             case GALVA:
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateGalva(vo.getCost());
                 }
+                break;
 
             case STAN:
                 for(FrontFrameVo vo : frontFrameVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateStan(vo.getCost());
                 }
+                break;
         }
     }
 
@@ -300,19 +303,19 @@ public class SignboardService {
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateAlu(-1);
-                }
+                } break;
 
             case GALVA:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateGalva(-1);
-                }
+                } break;
 
             case STAN:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateStan(-1);
-                }
+                } break;
         }
     }
 

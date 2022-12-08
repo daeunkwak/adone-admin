@@ -1,7 +1,7 @@
 package app.adoneadmin.vo.channel;
 
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.annotations.ApiModel;
+import lombok.*;
 
 
 @Getter
@@ -10,7 +10,7 @@ public class FrontLightVo {
 
     private long id;
 
-    private String option;
+    private String standard;
 
     private int led;
 
@@ -18,12 +18,74 @@ public class FrontLightVo {
 
     private int depth100;
 
-//    private int depth_35;
+    private int depth35;
+
+    private int depth60;
+
+    private int depth50;
+
+    private int depth120;
+
+//    @Getter
+//    @Setter
+//    public static class Alu extends FrontLightVo {
 //
-//    private int depth_60;
+//        private int depth80;
 //
-//    private int depth_50;
+//        private int depth100;
 //
-//    private int depth_120;
+//    }
+//
+//
+//    @Getter
+//    @Setter
+//    public static class Assembled extends FrontLightVo{
+//
+//        private int depth35;
+//
+//        private int depth60;
+//
+//    }
+//
+//
+//    @Getter
+//    @Setter
+//    public static class Epoxy extends FrontLightVo{
+//
+//        private int depth35;
+//
+//    }
+//
+//    @Getter
+//    @Setter
+//    public static class Galva extends FrontLightVo{
+//
+//        private int depth80;
+//
+//        private int depth100;
+//
+//        private int depth60;
+//
+//        private int depth50;
+//
+//        private int depth120;
+//
+//    }
+//
+//    @Getter
+//    @Setter
+//    public static class Stan extends FrontLightVo{
+//
+//        private int depth80;
+//
+//        private int depth100;
+//
+//        private int depth60;
+//
+//        private int depth50;
+//
+//        private int depth120;
+//
+//    }
 
 }

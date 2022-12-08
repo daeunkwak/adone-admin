@@ -22,30 +22,40 @@ public class ChFrontLightStan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String option;
+    private String standard;
 
     private int led;
 
-    private int depth_50;
+    private int depth50;
 
-    private int depth_60;
+    private int depth60;
 
-    private int depth_80;
+    private int depth80;
 
-    private int depth_100;
+    private int depth100;
 
-    private int depth_120;
+    private int depth120;
 
 
     public static ChFrontLightStan create(FrontLightVo vo){
 
         return new ChFrontLightStanBuilder()
-                .option(vo.getOption())
-//                .depth_50(vo.getDepth_50())
-//                .depth_60(vo.getDepth_60())
-//                .depth_80(vo.getDepth80())
-//                .depth_100(vo.getDepth100())
-//                .depth_120(vo.getDepth_120())
+                .standard(vo.getStandard())
+                .depth50(vo.getDepth50())
+                .depth60(vo.getDepth60())
+                .depth80(vo.getDepth80())
+                .depth100(vo.getDepth100())
+                .depth120(vo.getDepth120())
                 .build();
     }
+
+    public void updateFrontLightStan(FrontLightVo vo) {
+        this.led = vo.getLed();
+        this.depth50 = vo.getDepth50();
+        this.depth60 = vo.getDepth60();
+        this.depth80 = vo.getDepth80();
+        this.depth100 = vo.getDepth100();
+        this.depth120 = vo.getDepth120();
+    }
+
 }

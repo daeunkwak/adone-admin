@@ -9,5 +9,7 @@ public interface ChFrontLightAluRepository extends JpaRepository<ChFrontLightAlu
 //    @Query("select fl from ChFrontLightAlu fl where fl.option =:option")
 //    boolean isOptionExist(String option);
 
-    ChFrontLightAlu findByOption(String option);
+   // ChFrontLightAlu findByOption(String option);
+
+    ChFrontLightAlu findByStandard(String standard);
 }

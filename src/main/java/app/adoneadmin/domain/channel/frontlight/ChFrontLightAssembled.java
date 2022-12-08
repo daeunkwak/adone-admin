@@ -21,21 +21,29 @@ public class ChFrontLightAssembled {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String option;
+    private String standard;
 
     private int led;
 
-    private int depth_35;
+    private int depth35;
 
-    private int depth_60;
+    private int depth60;
 
 
     public static ChFrontLightAssembled create(FrontLightVo vo){
 
         return new ChFrontLightAssembledBuilder()
-                .option(vo.getOption())
-//                .depth_35(vo.getDepth_35())
-//                .depth_60(vo.getDepth_60())
+                .standard(vo.getStandard())
+                .depth35(vo.getDepth35())
+                .depth60(vo.getDepth60())
                 .build();
     }
+
+    public void updateFrontLightAssembled(FrontLightVo vo) {
+            this.led = vo.getLed();
+            this.depth35 = vo.getDepth35();
+            this.depth60 = vo.getDepth60();
+
+    }
+
 }
