@@ -9,8 +9,8 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "전면 프레임 조회 반환 객체")
-public class FrontFrameDto {
+@ApiModel(description = "규격+단가 조회 반환 객체")
+public class StandardCostDto {
 
     @ApiModelProperty(value = "단가 id", example = "1")
     private long id;
@@ -18,7 +18,7 @@ public class FrontFrameDto {
     @ApiModelProperty(value = "규격", example = "HQL 프레임")
     private String standard;
 
-    @ApiModelProperty(value = "가격", example = "21000")
+    @ApiModelProperty(value = "단가", example = "21000")
     private int cost;
 
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FrontFrameVo {
+public class StandardCostVo {
 
     private long id;
 
