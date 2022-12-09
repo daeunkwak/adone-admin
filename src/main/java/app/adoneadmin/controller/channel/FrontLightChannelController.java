@@ -1,6 +1,5 @@
-package app.adoneadmin.controller;
+package app.adoneadmin.controller.channel;
 
-import app.adoneadmin.domain.channel.frontlight.*;
 import app.adoneadmin.domain.constant.MaterialType;
 import app.adoneadmin.dto.channel.FrontLightDto;
 import app.adoneadmin.dto.channel.request.FrontLightRequestDto;
@@ -21,12 +20,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "channels", description = "채널 단가 api")
-@RequestMapping("/api/channels")
+@Tag(name = "channels/front-light", description = "전광 채널 단가 api")
+@RequestMapping("/api/channels/front-light")
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-public class ChannelController {
+public class FrontLightChannelController {
 
     private final ChannelService channelService;
     private final ModelMapper modelMapper;
@@ -35,7 +34,7 @@ public class ChannelController {
     @ApiOperation(value = "전광 채널 단가 추가 api",
                 notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n" + "- 해당되지 않는 depth필드 제외해서 보내주시면 됩니다.\n" +
                         "- ex) 알루미늄 [ { \"depth100\": 123, \"depth80\": 123, \"led\": 77, \"standard\": \"1000ENG\" } ]")
-    @PostMapping(value="/front-light")
+    @PostMapping(value="")
     public ResponseEntity<?> createFrontLight(@RequestBody @Valid List<FrontLightRequestDto> req,
                                                  @RequestParam("materialType") String materialType){
 
@@ -48,7 +47,7 @@ public class ChannelController {
     @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
     @ApiOperation(value = "전광 채널 단가 조회 api",
                 notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n")
-    @GetMapping(value="/front-light")
+    @GetMapping(value="")
     public ResponseEntity<?> getFrontLight(@RequestParam("materialType") String materialType){
 
         List<FrontLightVo> result = channelService.getFrontLight(materialType);
@@ -86,7 +85,7 @@ public class ChannelController {
     @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
     @ApiOperation(value = "전광 채널 단가 수정 api",
             notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n")
-    @PatchMapping(value="/front-light")
+    @PatchMapping(value="")
     public ResponseEntity<CommonApiResult> updateFrontLight(@RequestBody @Valid List<FrontLightRequestDto.FrontLightUpdateRequestDto> req,
                                                  @RequestParam("materialType") String materialType){
 
@@ -98,7 +97,7 @@ public class ChannelController {
     @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
     @ApiOperation(value = "전광 채널 단가 삭제 api",
             notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n")
-    @DeleteMapping(value="/front-light")
+    @DeleteMapping(value="")
     public ResponseEntity<CommonApiResult> deleteFrontLight(@RequestBody @Valid DeleteRequestDto req,
                                               @RequestParam("materialType") String materialType){
 

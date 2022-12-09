@@ -14,7 +14,8 @@ public enum MaterialType {
     GALVA("G", "갈바"),
     STAN("S", "스텐"),
     INTEGRAL("I", "일체형"),
-    EPOXY("E", "에폭시")
+    EPOXY("E", "에폭시"),
+    TITANIUMGOLD("T", "티타늄골드")
     ;
 
     private String alias;

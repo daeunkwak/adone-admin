@@ -2,13 +2,13 @@ package app.adoneadmin.controller;
 
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
-import app.adoneadmin.dto.signboard.request.FrontFrameRequestDto;
+import app.adoneadmin.dto.signboard.request.StandardCostRequestDto;
 import app.adoneadmin.dto.signboard.request.StandardMaterialRequestDto;
 import app.adoneadmin.dto.signboard.StandardMaterialDto;
-import app.adoneadmin.dto.signboard.FrontFrameDto;
+import app.adoneadmin.dto.signboard.StandardCostDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.service.SignboardService;
-import app.adoneadmin.vo.signboard.FrontFrameVo;
+import app.adoneadmin.vo.signboard.StandardCostVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -135,11 +135,11 @@ public class SignboardController {
     @Tag(name = "signboards/front-frame", description = "간판 - 전면 프레임 단가 api")
     @ApiOperation(value = "전면 프레임 단가 추가 api", notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
     @PostMapping(value="/front-frame")
-    public ResponseEntity<?> createFrontFrame(@RequestBody @Valid List<FrontFrameRequestDto> req,
+    public ResponseEntity<?> createFrontFrame(@RequestBody @Valid List<StandardCostRequestDto> req,
                                                             @RequestParam("materialType") String materialType){
 
-        List<FrontFrameVo> frontFrameVoList = req.stream().map(dto -> modelMapper.map(dto, FrontFrameVo.class)).collect(Collectors.toList());
-        signboardService.createFrontFrame(materialType, frontFrameVoList);
+        List<StandardCostVo> standardCostVoList = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
+        signboardService.createFrontFrame(materialType, standardCostVoList);
 
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
@@ -149,10 +149,10 @@ public class SignboardController {
     @ApiOperation(value = "전면 프레임 단가 조회 api",
             notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S\n" + "- -1은 입력되지 않은 값들입니다.")
     @GetMapping(value="/front-frame")
-    public ResponseEntity<List<FrontFrameDto>> getFrontFrame(@RequestParam("materialType") String materialType){
+    public ResponseEntity<List<StandardCostDto>> getFrontFrame(@RequestParam("materialType") String materialType){
 
-        List<FrontFrameDto> result = signboardService.getFrontFrame(materialType).stream().map(frontFrameVo -> {
-            return modelMapper.map(frontFrameVo, FrontFrameDto.class);
+        List<StandardCostDto> result = signboardService.getFrontFrame(materialType).stream().map(standardCostVo -> {
+            return modelMapper.map(standardCostVo, StandardCostDto.class);
         }).collect(Collectors.toList());
         return ResponseEntity.ok(result);
     }
@@ -162,11 +162,11 @@ public class SignboardController {
     @ApiOperation(value = "전면 프레임 단가 수정 api",
             notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
     @PatchMapping(value="/front-frame")
-    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<FrontFrameDto> req,
+    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<StandardCostRequestDto.StandardCostUpdateRequestDto> req,
                                                                 @RequestParam("materialType") String materialType){
 
-        List<FrontFrameVo> frontFrameVos = req.stream().map(dto -> modelMapper.map(dto, FrontFrameVo.class)).collect(Collectors.toList());
-        signboardService.updateFrontFrame(frontFrameVos, materialType);
+        List<StandardCostVo> standardCostVos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
+        signboardService.updateFrontFrame(standardCostVos, materialType);
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 수정되었습니다."));
     }
 

@@ -7,7 +7,7 @@ import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.repository.signboard.*;
 import app.adoneadmin.repository.signboard.frontframe.SbFrontFrameRepository;
-import app.adoneadmin.vo.signboard.FrontFrameVo;
+import app.adoneadmin.vo.signboard.StandardCostVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,10 +68,10 @@ public class SignboardService {
     /**
      * 전면 프레임 항목 추가
      */
-    public void createFrontFrame(String materialType, List<FrontFrameVo> frontFrameVoList){
+    public void createFrontFrame(String materialType, List<StandardCostVo> standardCostVoList){
         switch (MaterialType.of(materialType)) {
             case ALUMINUM:
-                for (FrontFrameVo vo : frontFrameVoList) {
+                for (StandardCostVo vo : standardCostVoList) {
 
                     SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
 
@@ -87,7 +87,7 @@ public class SignboardService {
                 break;
 
             case GALVA:
-                for (FrontFrameVo vo : frontFrameVoList) {
+                for (StandardCostVo vo : standardCostVoList) {
                     SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
 
                     if(frontFrame != null){
@@ -100,7 +100,7 @@ public class SignboardService {
                 break;
 
             case STAN:
-                for(FrontFrameVo vo : frontFrameVoList){
+                for(StandardCostVo vo : standardCostVoList){
                     SbFrontFrame frontFrame = sbFrontFrameRepository.isStandardExist(vo.getStandard());
 
                     if(frontFrame != null){
@@ -148,11 +148,11 @@ public class SignboardService {
     /**
      * 전면 프레임 단가표 조회
      */
-    public List<FrontFrameVo> getFrontFrame(String materialType) {
+    public List<StandardCostVo> getFrontFrame(String materialType) {
 
         // TODO : 중복되는 코드 처리
         List<SbFrontFrame> sbFrontFrames;
-        List<FrontFrameVo> frontFrameVos = new ArrayList<>();
+        List<StandardCostVo> standardCostVos = new ArrayList<>();
 
         switch (MaterialType.of(materialType)){
             case ALUMINUM:
@@ -160,39 +160,39 @@ public class SignboardService {
                         .stream().filter(sbFrontFrameAlu -> sbFrontFrameAlu.getAlu() != -1).collect(Collectors.toList());
 
                 for(SbFrontFrame sbFrontFrame : sbFrontFrames){
-                    FrontFrameVo vo = new FrontFrameVo();
+                    StandardCostVo vo = new StandardCostVo();
                     vo.setId(sbFrontFrame.getId());
                     vo.setStandard(sbFrontFrame.getStandard());
                     vo.setCost(sbFrontFrame.getAlu());
-                    frontFrameVos.add(vo);
+                    standardCostVos.add(vo);
                 }
-                return frontFrameVos;
+                return standardCostVos;
 
             case GALVA:
                 sbFrontFrames = sbFrontFrameRepository.findAll()
                         .stream().filter(sbFrontFrameGalva -> sbFrontFrameGalva.getGalva() != -1).collect(Collectors.toList());
 
                 for(SbFrontFrame sbFrontFrame : sbFrontFrames){
-                    FrontFrameVo vo = new FrontFrameVo();
+                    StandardCostVo vo = new StandardCostVo();
                     vo.setId(sbFrontFrame.getId());
                     vo.setStandard(sbFrontFrame.getStandard());
                     vo.setCost(sbFrontFrame.getGalva());
-                    frontFrameVos.add(vo);
+                    standardCostVos.add(vo);
                 }
-                return frontFrameVos;
+                return standardCostVos;
 
             case STAN:
                 sbFrontFrames = sbFrontFrameRepository.findAll()
                         .stream().filter(sbFrontFrameStan -> sbFrontFrameStan.getStan() != -1).collect(Collectors.toList());
 
                 for(SbFrontFrame sbFrontFrame : sbFrontFrames){
-                    FrontFrameVo vo = new FrontFrameVo();
+                    StandardCostVo vo = new StandardCostVo();
                     vo.setId(sbFrontFrame.getId());
                     vo.setStandard(sbFrontFrame.getStandard());
                     vo.setCost(sbFrontFrame.getStan());
-                    frontFrameVos.add(vo);
+                    standardCostVos.add(vo);
                 }
-                return frontFrameVos;
+                return standardCostVos;
         }
 
         throw new CustomException("잘못된 materialType 입니다.");
@@ -246,23 +246,23 @@ public class SignboardService {
     /**
      * 전면 프레임 단가 수정
      */
-    public void updateFrontFrame(List<FrontFrameVo> frontFrameVos, String materialType) {
+    public void updateFrontFrame(List<StandardCostVo> standardCostVos, String materialType) {
 
         switch (MaterialType.of(materialType)){
             case ALUMINUM:
-                for(FrontFrameVo vo : frontFrameVos){
+                for(StandardCostVo vo : standardCostVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateAlu(vo.getCost());
                 }
                 break;
 
             case GALVA:
-                for(FrontFrameVo vo : frontFrameVos){
+                for(StandardCostVo vo : standardCostVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateGalva(vo.getCost());
                 }
                 break;
 
             case STAN:
-                for(FrontFrameVo vo : frontFrameVos){
+                for(StandardCostVo vo : standardCostVos){
                     findSbFrontFrameOrThrow(vo.getId()).updateStan(vo.getCost());
                 }
                 break;

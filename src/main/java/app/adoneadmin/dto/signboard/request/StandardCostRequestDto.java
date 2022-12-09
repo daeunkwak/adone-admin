@@ -10,11 +10,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "전면간판 단가 항목 추가 요청 객체")
-public class FrontFrameRequestDto {
+public class StandardCostRequestDto {
 
     @ApiModelProperty(value = "규격", example = "HQL 프레임")
     private String standard;
 
     @ApiModelProperty(value = "가격", example = "21000")
     private int cost;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "전면간판 단가 항목 수정 요청 객체")
+    public static class StandardCostUpdateRequestDto {
+
+        @ApiModelProperty(value = "단가 id", example = "1")
+        private long id;
+
+        @ApiModelProperty(value = "가격", example = "21000")
+        private int cost;
+    }
 }
