@@ -4,6 +4,7 @@ import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.file.notice.NoticeFileRepository;
 import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.notice.Notice;
+import app.adoneadmin.dto.file.FileDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.global.exception.handler.NoSuchMemberException;
@@ -62,8 +63,9 @@ public class NoticeService {
      */
     public Notice getNotice(Long noticeId) {
 
-        return noticeRepository.getById(noticeId);
+        return findNoticeOrThrow(noticeId);
     }
+
 
     /**
      * 공지사항 검색

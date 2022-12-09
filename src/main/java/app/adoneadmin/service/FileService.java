@@ -5,6 +5,7 @@ import app.adoneadmin.domain.file.notice.NoticeFile;
 import app.adoneadmin.domain.file.notice.NoticeFileRepository;
 import app.adoneadmin.domain.image.Image;
 import app.adoneadmin.domain.notice.Notice;
+import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.repository.file.FileRepository;
@@ -81,6 +82,19 @@ public class FileService {
             }
         }
         return noticeFileList;
+    }
+
+
+    /**
+     * 공지사항 첨부파일 리스트 삭제
+     */
+    public void deleteNoticeFiles(Long noticeId, DeleteRequestDto req) {
+
+        // TODO : 공지사항과 대조 > 예외처리
+        for(Long id : req.getIdList()){
+            noticeFileRepository.deleteById(id);
+        }
+
     }
 
 
