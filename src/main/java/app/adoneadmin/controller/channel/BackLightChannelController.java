@@ -45,7 +45,7 @@ public class BackLightChannelController {
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 추가 api")
-    @PostMapping(value="/T")
+    @PostMapping(value="/titanium")
     public ResponseEntity<?> createBackLightTitaniumGold(@RequestBody @Valid List<StandardCostRequestDto> req){
 
         List<StandardCostVo> vos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class BackLightChannelController {
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 조회 api")
-    @GetMapping(value="/T")
+    @GetMapping(value="/titanium")
     public ResponseEntity<List<StandardCostDto>> getBackLightTitaniumGold(){
 
         List<StandardCostDto> result = channelService.getBackLightTitaniumGold().stream().map(vo -> {
@@ -92,7 +92,7 @@ public class BackLightChannelController {
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 수정 api")
-    @PatchMapping(value="/T")
+    @PatchMapping(value="/titanium")
     public ResponseEntity<CommonApiResult> updateBackLightTitaniumGold(@RequestBody @Valid List<StandardCostRequestDto.StandardCostUpdateRequestDto> req){
 
         List<StandardCostVo> standardCostVos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
