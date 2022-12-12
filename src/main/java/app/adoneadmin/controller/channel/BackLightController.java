@@ -38,7 +38,7 @@ public class BackLightController {
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 갈바, 스텐 단가 추가 api", notes = "- materialType [ 갈바:G, 스텐:S ]\n")
     @PostMapping(value="")
-    public ResponseEntity<?> createBackLight(@RequestBody @Valid List<ChannelRequestDto.BackLight> req,
+    public ResponseEntity<CommonApiResult> createBackLight(@RequestBody @Valid List<ChannelRequestDto.BackLight> req,
                                              @RequestParam("materialType") String materialType){
 
         List<BackLightVo> backLightVos = req.stream().map(dto -> modelMapper.map(dto, BackLightVo.class)).collect(Collectors.toList());
