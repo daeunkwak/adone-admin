@@ -44,4 +44,5 @@ public class BackLightRequestDto {
         private int depth50;
 
     }
+
 }
