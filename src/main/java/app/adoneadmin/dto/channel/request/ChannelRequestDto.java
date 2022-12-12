@@ -15,15 +15,15 @@ public class ChannelRequestDto {
     @ApiModelProperty(value = "규격", example = "300 ENG")
     private String standard;
 
-    @ApiModelProperty(value = "LED", example = "77")
-    private int led;
-
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @ApiModel(description = "전광채널 단가 추가 요청 객체")
     public static class FrontLight extends ChannelRequestDto{
+
+        @ApiModelProperty(value = "LED", example = "77")
+        private int led;
 
         private int depth80;
 
@@ -46,8 +46,10 @@ public class ChannelRequestDto {
     @ApiModel(description = "후광채널 단가 추가 요청 객체")
     public static class BackLight extends ChannelRequestDto{
 
-        private int depth80;
+        @ApiModelProperty(value = "LED", example = "77")
+        private int led;
 
+        private int depth80;
 
         private int depth30;
 
@@ -62,9 +64,27 @@ public class ChannelRequestDto {
     @ApiModel(description = "전후광채널 단가 추가 요청 객체")
     public static class FrontBackLight extends ChannelRequestDto{
 
+        @ApiModelProperty(value = "LED", example = "77")
+        private int led;
+
         private int depth80;
 
         private int depth100;
+
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "비조명(벡채널) 단가 추가 요청 객체")
+    public static class Back extends ChannelRequestDto{
+
+        private int depth80;
+
+        private int depth30;
+
+        private int depth50;
 
     }
 
