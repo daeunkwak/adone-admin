@@ -1,7 +1,9 @@
 package app.adoneadmin.controller.channel;
 
+import app.adoneadmin.domain.constant.MaterialType;
 import app.adoneadmin.dto.channel.BackLightDto;
 import app.adoneadmin.dto.channel.ChannelDto;
+import app.adoneadmin.dto.channel.FrontLightDto;
 import app.adoneadmin.dto.channel.request.BackLightRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
@@ -9,6 +11,7 @@ import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.dto.signboard.StandardCostDto;
 import app.adoneadmin.dto.signboard.request.StandardCostRequestDto;
+import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.service.ChannelService;
 import app.adoneadmin.vo.channel.BackLightVo;
 import app.adoneadmin.vo.signboard.StandardCostVo;
@@ -36,7 +39,7 @@ public class BackLightController {
 
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
-    @ApiOperation(value = "후광 채널 갈바, 스텐 단가 추가 api", notes = "- materialType [ 갈바:G, 스텐:S ]\n")
+    @ApiOperation(value = "후광 채널 갈바, 스텐 단가 추가 api", notes = "- materialType [ 갈바:G, 스텐:S, 티타늄골드:T ]\n")
     @PostMapping(value="")
     public ResponseEntity<CommonApiResult> createBackLight(@RequestBody @Valid List<ChannelRequestDto.BackLight> req,
                                              @RequestParam("materialType") String materialType){
@@ -49,28 +52,48 @@ public class BackLightController {
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 추가 api")
     @PostMapping(value="/titanium")
+    @Deprecated
     public ResponseEntity<?> createBackLightTitaniumGold(@RequestBody @Valid List<StandardCostRequestDto> req){
 
         List<StandardCostVo> vos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
-        channelService.createBackLightTitaniumGold(vos);
+        //channelService.createBackLightTitaniumGold(vos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
 
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
-    @ApiOperation(value = "후광 채널 갈바, 스텐 단가 조회 api", notes = "- materialType [ 갈바:G, 스텐:S ]\n")
+    @ApiOperation(value = "후광 채널 단가 조회 api", notes = "- materialType [ 갈바:G, 스텐:S, 티타늄골드:T ]\n")
     @GetMapping(value="")
-    public ResponseEntity<List<ChannelDto.BackLight>> getBackLight(@RequestParam("materialType") String materialType){
+    public ResponseEntity<?> getBackLight(@RequestParam("materialType") String materialType){
 
-        List<ChannelDto.BackLight> result = channelService.getBackLight(materialType).stream().map(vo -> {
-            return modelMapper.map(vo, ChannelDto.BackLight.class);}).collect(Collectors.toList());
-        return ResponseEntity.ok(result);
+        List<BackLightVo> result = channelService.getBackLight(materialType);
+
+        switch (MaterialType.of(materialType)){
+            case TITANIUMGOLD:
+                List<BackLightDto.TitaniumGold> titaniumGolds = result.stream().map(vo -> {
+                    return modelMapper.map(vo, BackLightDto.TitaniumGold.class);}).collect(Collectors.toList());
+                return ResponseEntity.ok(titaniumGolds);
+
+            case GALVA:
+                List<BackLightDto.Galva> galvas = result.stream().map(vo -> {
+                    return modelMapper.map(vo, BackLightDto.Galva.class);}).collect(Collectors.toList());
+                return ResponseEntity.ok(galvas);
+
+            case STAN:
+                List<BackLightDto.Stan> stans = result.stream().map(vo -> {
+                    return modelMapper.map(vo, BackLightDto.Stan.class);}).collect(Collectors.toList());
+                return ResponseEntity.ok(stans);
+
+        }
+
+        throw new CustomException("잘못된 materialType 입니다.");
     }
 
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 조회 api")
     @GetMapping(value="/titanium")
+    @Deprecated
     public ResponseEntity<List<StandardCostDto>> getBackLightTitaniumGold(){
 
         List<StandardCostDto> result = channelService.getBackLightTitaniumGold().stream().map(vo -> {
@@ -80,8 +103,8 @@ public class BackLightController {
 
 
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
-    @ApiOperation(value = "후광 채널 갈바, 스텐 단가 수정 api",
-            notes = "- materialType [ 갈바:G, 스텐:S ]\n")
+    @ApiOperation(value = "후광 채널 단가 수정 api",
+            notes = "- materialType [ 갈바:G, 스텐:S, 티타늄골드:T ]\n" + "- 해당되지 않는 depth 필드엔 아무 값이나 넣어서 주시면 됩니다.")
     @PatchMapping(value="")
     public ResponseEntity<CommonApiResult> updateBackLight(@RequestBody @Valid List<ChannelUpdateRequestDto.BackLightUpdate> req,
                                                             @RequestParam("materialType") String materialType){
@@ -95,10 +118,11 @@ public class BackLightController {
     @Tag(name = "channels/back-light", description = "채널 - 후광 채널 단가 api")
     @ApiOperation(value = "후광 채널 티타늄골드 단가 수정 api")
     @PatchMapping(value="/titanium")
+    @Deprecated
     public ResponseEntity<CommonApiResult> updateBackLightTitaniumGold(@RequestBody @Valid List<StandardCostRequestDto.StandardCostUpdateRequestDto> req){
 
         List<StandardCostVo> standardCostVos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
-        channelService.updateBackLightTitaniumGold(standardCostVos);
+        // channelService.updateBackLightTitaniumGold(standardCostVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 수정되었습니다."));
     }
 

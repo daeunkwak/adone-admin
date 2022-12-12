@@ -23,11 +23,6 @@ public class BackLightDto {
     @ApiModelProperty(value = "LED", example = "77")
     private int led;
 
-    private int depth80;
-
-    private int depth30;
-
-    private int depth50;
 
     @Data
     @AllArgsConstructor
@@ -55,6 +50,18 @@ public class BackLightDto {
         private int depth30;
 
         private int depth50;
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @ApiModel(description = "후광채널 티타늄골드 객체")
+    public static class TitaniumGold extends BackLightDto{
+
+        private int depth30;
+
     }
 
 }

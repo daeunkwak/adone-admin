@@ -1,5 +1,6 @@
 package app.adoneadmin.domain.channel.backlight;
 
+import app.adoneadmin.vo.channel.BackLightVo;
 import app.adoneadmin.vo.signboard.StandardCostVo;
 import lombok.*;
 
@@ -23,19 +24,23 @@ public class ChBackLightTitaniumGold {
 
     private String standard;
 
-    private int cost;
+    private int led;
+
+    private int depth30;
 
 
-    public static ChBackLightTitaniumGold create(StandardCostVo vo){
+    public static ChBackLightTitaniumGold create(BackLightVo vo){
 
         return ChBackLightTitaniumGold.builder()
                 .standard(vo.getStandard())
-                .cost(vo.getCost())
+                .led(vo.getLed())
+                .depth30(vo.getDepth30())
                 .build();
     }
 
-    public void updateCost(int cost){
-        this.cost = cost;
+    public void updateBackLightTitaniumGold(BackLightVo vo){
+        this.led = vo.getLed();
+        this.depth30 = vo.getDepth30();
     }
 
 }

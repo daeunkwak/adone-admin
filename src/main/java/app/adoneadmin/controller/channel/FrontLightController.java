@@ -86,7 +86,7 @@ public class FrontLightController {
 
     @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
     @ApiOperation(value = "전광 채널 단가 수정 api",
-            notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n")
+            notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S, 일체형:I, 에폭시:E ]\n" + "- 해당되지 않는 depth 필드엔 아무 값이나 넣어서 주시면 됩니다.")
     @PatchMapping(value="")
     public ResponseEntity<CommonApiResult> updateFrontLight(@RequestBody @Valid List<ChannelUpdateRequestDto.FrontLightUpdate> req,
                                                  @RequestParam("materialType") String materialType){

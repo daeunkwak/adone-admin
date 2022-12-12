@@ -252,22 +252,31 @@ public class ChannelService {
                     chBackLightStanRepository.save(ChBackLightStan.create(vo));
                 } break;
 
+            case TITANIUMGOLD:
+                for(BackLightVo vo : backLightVos){
+                    if(chBackLightTitaniumGoldRepository.findByStandard(vo.getStandard()) != null){
+                        throw new CustomException("이미 존재하는 옵션입니다.");
+                    }
+                    chBackLightTitaniumGoldRepository.save(ChBackLightTitaniumGold.create(vo));
+                } break;
+
+
         }
     }
 
 
-    /**
-     * 후광 채널 티타늄골드 단가 추가
-     */
-    public void createBackLightTitaniumGold(List<StandardCostVo> backLightVos) {
-
-        for(StandardCostVo vo : backLightVos){
-            if(chBackLightTitaniumGoldRepository.findByStandard(vo.getStandard()) != null){
-                throw new CustomException("이미 존재하는 옵션입니다.");
-            }
-            chBackLightTitaniumGoldRepository.save(ChBackLightTitaniumGold.create(vo));
-        }
-    }
+//    /**
+//     * 후광 채널 티타늄골드 단가 추가
+//     */
+//    public void createBackLightTitaniumGold(List<StandardCostVo> backLightVos) {
+//
+//        for(StandardCostVo vo : backLightVos){
+//            if(chBackLightTitaniumGoldRepository.findByStandard(vo.getStandard()) != null){
+//                throw new CustomException("이미 존재하는 옵션입니다.");
+//            }
+//            chBackLightTitaniumGoldRepository.save(ChBackLightTitaniumGold.create(vo));
+//        }
+//    }
 
 
     /**
@@ -286,9 +295,14 @@ public class ChannelService {
                     return modelMapper.map(chBackLightStan, BackLightVo.class);
                 }).collect(Collectors.toList());
 
-        }
+            case TITANIUMGOLD:
+                return chBackLightTitaniumGoldRepository.findAll().stream().map(chBackLightTitaniumGold -> {
+                    return modelMapper.map(chBackLightTitaniumGold, BackLightVo.class);
+                }).collect(Collectors.toList());
 
+        }
         throw new CustomException("잘못된 materialType 입니다.");
+
     }
 
 
@@ -323,21 +337,28 @@ public class ChannelService {
                     }).updateBackLightStan(vo);
                 } break;
 
+            case TITANIUMGOLD:
+                for(BackLightVo vo : backLightVos){
+                    chBackLightTitaniumGoldRepository.findById(vo.getId()).orElseThrow(() -> {
+                        throw new NoSuchIdException("존재하지 않는 id 입니다.");
+                    }).updateBackLightTitaniumGold(vo);
+                } break;
+
         }
     }
 
 
-    /**
-     * 후광 채널 티타늄골드 단가 수정
-     */
-    public void updateBackLightTitaniumGold(List<StandardCostVo> standardCostVos) {
-
-        for(StandardCostVo vo : standardCostVos){
-            chBackLightTitaniumGoldRepository.findById(vo.getId()).orElseThrow(() -> {
-                throw new NoSuchIdException("존재하지 않는 id 입니다.");
-            }).updateCost(vo.getCost());
-        }
-    }
+//    /**
+//     * 후광 채널 티타늄골드 단가 수정
+//     */
+//    public void updateBackLightTitaniumGold(List<StandardCostVo> standardCostVos) {
+//
+//        for(StandardCostVo vo : standardCostVos){
+//            chBackLightTitaniumGoldRepository.findById(vo.getId()).orElseThrow(() -> {
+//                throw new NoSuchIdException("존재하지 않는 id 입니다.");
+//            }).updateCost(vo.getCost());
+//        }
+//    }
 
 
     /**
