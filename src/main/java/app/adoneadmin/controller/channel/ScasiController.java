@@ -1,16 +1,13 @@
 package app.adoneadmin.controller.channel;
 
 import app.adoneadmin.domain.constant.MaterialType;
-import app.adoneadmin.dto.channel.FrontLightDto;
 import app.adoneadmin.dto.channel.ScasiDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
-import app.adoneadmin.service.ChannelService;
-import app.adoneadmin.vo.channel.BackLightVo;
-import app.adoneadmin.vo.channel.FrontLightVo;
+import app.adoneadmin.service.channel.ScasiService;
 import app.adoneadmin.vo.channel.ScasiVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ScasiController {
 
-    private final ChannelService channelService;
+    private final ScasiService scasiService;
     private final ModelMapper modelMapper;
 
 
@@ -42,7 +39,7 @@ public class ScasiController {
                                                       @RequestParam("materialType") String materialType){
 
         List<ScasiVo> scasiVos = req.stream().map(dto -> modelMapper.map(dto, ScasiVo.class)).collect(Collectors.toList());
-        channelService.createScasi(materialType, scasiVos);
+        scasiService.createScasi(materialType, scasiVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
 
@@ -52,7 +49,7 @@ public class ScasiController {
     @GetMapping(value="")
     public ResponseEntity<?> getScasi(@RequestParam("materialType") String materialType){
 
-        List<ScasiVo> result = channelService.getScasi(materialType);
+        List<ScasiVo> result = scasiService.getScasi(materialType);
 
         switch (MaterialType.of(materialType)){
             case ACRYL:
@@ -84,7 +81,7 @@ public class ScasiController {
 
 
         List<ScasiVo> scasiVos = req.stream().map(dto -> modelMapper.map(dto, ScasiVo.class)).collect(Collectors.toList());
-        channelService.updateScasi(materialType, scasiVos);
+        scasiService.updateScasi(materialType, scasiVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 수정되었습니다."));
     }
 
@@ -95,7 +92,7 @@ public class ScasiController {
     public ResponseEntity<CommonApiResult> updateScasi(@RequestBody @Valid DeleteRequestDto req,
                                                        @RequestParam("materialType") String materialType){
 
-        channelService.deleteScasi(req, materialType);
+        scasiService.deleteScasi(req, materialType);
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 삭제되었습니다."));
     }
 

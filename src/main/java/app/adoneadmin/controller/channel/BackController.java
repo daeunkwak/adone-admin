@@ -6,7 +6,7 @@ import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
-import app.adoneadmin.service.ChannelService;
+import app.adoneadmin.service.channel.BackService;
 import app.adoneadmin.vo.channel.BackLightVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BackController {
 
-    private final ChannelService channelService;
+    private final BackService backService;
     private final ModelMapper modelMapper;
 
 
@@ -38,7 +38,7 @@ public class BackController {
                                              @RequestParam("materialType") String materialType){
 
         List<BackLightVo> backLightVos = req.stream().map(dto -> modelMapper.map(dto, BackLightVo.class)).collect(Collectors.toList());
-        channelService.createBack(materialType, backLightVos);
+        backService.createBack(materialType, backLightVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
 
@@ -48,7 +48,7 @@ public class BackController {
     @GetMapping(value="")
     public ResponseEntity<List<ChannelDto.Back>> getBack(@RequestParam("materialType") String materialType){
 
-        List<ChannelDto.Back> result = channelService.getBack(materialType).stream().map(vo -> {
+        List<ChannelDto.Back> result = backService.getBack(materialType).stream().map(vo -> {
             return modelMapper.map(vo, ChannelDto.Back.class);}).collect(Collectors.toList());
         return ResponseEntity.ok(result);
     }
@@ -61,7 +61,7 @@ public class BackController {
                                                               @RequestParam("materialType") String materialType){
 
         List<BackLightVo> backLightVos = req.stream().map(dto -> modelMapper.map(dto, BackLightVo.class)).collect(Collectors.toList());
-        channelService.updateBack(materialType, backLightVos);
+        backService.updateBack(materialType, backLightVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 수정되었습니다."));
     }
 
@@ -72,12 +72,8 @@ public class BackController {
     public ResponseEntity<CommonApiResult> deleteBack(@RequestBody @Valid DeleteRequestDto req,
                                                            @RequestParam("materialType") String materialType){
 
-        channelService.deleteBackLight(req, materialType);
+        backService.deleteBack(req, materialType);
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 삭제되었습니다."));
     }
-
-
-
-
 
 }

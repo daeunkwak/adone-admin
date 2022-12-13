@@ -4,11 +4,10 @@ import app.adoneadmin.domain.constant.MaterialType;
 import app.adoneadmin.dto.channel.FrontLightDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
-import app.adoneadmin.dto.channel.request.FrontLightRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
-import app.adoneadmin.service.ChannelService;
+import app.adoneadmin.service.channel.FrontLightService;
 import app.adoneadmin.vo.channel.FrontLightVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FrontLightController {
 
-    private final ChannelService channelService;
+    private final FrontLightService frontLightService;
     private final ModelMapper modelMapper;
 
     @Tag(name = "channels/front-light", description = "채널 - 전광 채널 단가 api")
@@ -41,7 +40,7 @@ public class FrontLightController {
                                                  @RequestParam("materialType") String materialType){
 
         List<FrontLightVo> frontLightVos = req.stream().map(dto -> modelMapper.map(dto, FrontLightVo.class)).collect(Collectors.toList());
-        channelService.createFrontLight(materialType, frontLightVos);
+        frontLightService.createFrontLight(materialType, frontLightVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
     }
 
@@ -52,7 +51,7 @@ public class FrontLightController {
     @GetMapping(value="")
     public ResponseEntity<?> getFrontLight(@RequestParam("materialType") String materialType){
 
-        List<FrontLightVo> result = channelService.getFrontLight(materialType);
+        List<FrontLightVo> result = frontLightService.getFrontLight(materialType);
 
         switch (MaterialType.of(materialType)){
             case ALUMINUM:
@@ -92,7 +91,7 @@ public class FrontLightController {
                                                  @RequestParam("materialType") String materialType){
 
         List<FrontLightVo> frontLightVos = req.stream().map(dto -> modelMapper.map(dto, FrontLightVo.class)).collect(Collectors.toList());
-        channelService.updateFrontLight(materialType, frontLightVos);
+        frontLightService.updateFrontLight(materialType, frontLightVos);
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 수정되었습니다."));
     }
 
@@ -103,7 +102,7 @@ public class FrontLightController {
     public ResponseEntity<CommonApiResult> deleteFrontLight(@RequestBody @Valid DeleteRequestDto req,
                                               @RequestParam("materialType") String materialType){
 
-        channelService.deleteFrontLight(req, materialType);
+        frontLightService.deleteFrontLight(req, materialType);
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 삭제되었습니다."));
 
     }
