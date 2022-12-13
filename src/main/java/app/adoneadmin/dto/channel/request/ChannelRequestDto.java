@@ -89,5 +89,28 @@ public class ChannelRequestDto {
     }
 
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "스카시 단가 추가 요청 객체")
+    public static class Scasi extends ChannelRequestDto{
+
+        private int depth3;
+
+        private int depth5;
+
+        private int depth8;
+
+        private int depth10;
+
+        private int depth20;
+
+        private int depth30;
+
+        private int depth50;
+
+    }
+
+
 }
 

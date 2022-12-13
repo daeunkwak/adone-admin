@@ -15,7 +15,10 @@ public enum MaterialType {
     STAN("S", "스텐"),
     INTEGRAL("I", "일체형"),
     EPOXY("E", "에폭시"),
-    TITANIUMGOLD("T", "티타늄골드")
+    TITANIUMGOLD("T", "티타늄골드"),
+    ACRYL("C", "아크릴"),
+    RUBBER("R", "고무"),
+    FORMEX("F", "포맥스")
     ;
 
     private String alias;
