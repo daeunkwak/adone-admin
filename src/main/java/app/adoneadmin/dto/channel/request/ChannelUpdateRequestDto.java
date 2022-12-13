@@ -89,4 +89,27 @@ public class ChannelUpdateRequestDto {
     }
 
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "스카시 단가 수정 요청 객체")  // TODO :이것도 Rubber랑 수정/생성 분리 -> 성능 비교
+    public static class ScasiUpdate extends ChannelUpdateRequestDto {
+
+        private int depth3;
+
+        private int depth5;
+
+        private int depth8;
+
+        private int depth10;
+
+        private int depth20;
+
+        private int depth30;
+
+        private int depth50;
+
+    }
+
+
 }
