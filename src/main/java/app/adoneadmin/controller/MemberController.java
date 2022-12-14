@@ -46,6 +46,15 @@ public class MemberController {
 
 
     @Tag(name = "members")
+    @ApiOperation(value = "미승인 회원 리스트 조회 api")
+    @GetMapping(value="/unauthorized")
+    public ResponseEntity<List<MemberResponseDto>> getUnAuthorizedMemberList(){
+
+        return ResponseEntity.ok(memberService.getUnAuthorizedMemberList().stream().map(MemberResponseDto::from).collect(Collectors.toList()));
+    }
+
+
+    @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 상세 조회 api")
     @GetMapping(value="/{memberId}")
     public ResponseEntity<MemberDetailResponseDto> getMemberList(@PathVariable("memberId") Long memberId){
