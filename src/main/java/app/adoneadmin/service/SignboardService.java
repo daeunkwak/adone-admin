@@ -251,23 +251,55 @@ public class SignboardService {
         switch (MaterialType.of(materialType)){
             case ALUMINUM:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateAlu(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){     // standard를 수정하지 않는 경우 -> 해당 materialType 값만 업데이트
+                        frame.updateAlu(vo.getCost());
+                    }else{
+                        frame.updateAlu(-1);
+                        SbFrontFrame alu = SbFrontFrame.createAlu(vo.getStandard(), vo.getCost());      // standard를 수정하는 경우 -> 새로운 레코드 생성
+                        sbFrontFrameRepository.save(alu);
+
+                        if(noneCheck(frame)){       // 해당 standard에 아무 값도 남아있지 않는 경우 -> 레코드 삭제
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
 
             case GALVA:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateGalva(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){
+                        frame.updateGalva(vo.getCost());
+                    }else{
+                        frame.updateGalva(-1);
+                        SbFrontFrame galva = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(galva);
+
+                        if(noneCheck(frame)){
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
 
             case STAN:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateStan(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){
+                        frame.updateStan(vo.getCost());
+                    }else{
+                        frame.updateStan(-1);
+                        SbFrontFrame stan = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(stan);
+
+                        if(noneCheck(frame)){
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
         }
+
     }
+
 
     /**
      * 전면 트러스 단가 삭제
@@ -303,20 +335,37 @@ public class SignboardService {
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateAlu(-1);
+
+                    if(noneCheck(sbFrontFrame)){       // 해당 standard에 아무 값도 남아있지 않는 경우 -> 레코드 삭제
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
 
             case GALVA:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateGalva(-1);
+
+                    if(noneCheck(sbFrontFrame)){
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
 
             case STAN:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateStan(-1);
+
+                    if(noneCheck(sbFrontFrame)){
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
         }
+    }
+
+
+    private boolean noneCheck(SbFrontFrame frame){
+        return frame.getGalva() == -1 && frame.getAlu() == -1 && frame.getStan() == -1;
     }
 
 

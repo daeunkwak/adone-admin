@@ -30,7 +30,7 @@ public class FrontFrameController {
 
 
     @Tag(name = "signboards/front-frame", description = "간판 - 전면 프레임 단가 api")
-    @ApiOperation(value = "전면 프레임 단가 추가 api", notes = "- materialType [ 알루미늄 : A, 갈바 : G, 스텐 : S")
+    @ApiOperation(value = "전면 프레임 단가 추가 api", notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S ]")
     @PostMapping(value="")
     public ResponseEntity<?> createFrontFrame(@RequestBody @Valid List<StandardCostRequestDto> req,
                                               @RequestParam("materialType") String materialType){
@@ -44,7 +44,7 @@ public class FrontFrameController {
 
     @Tag(name = "signboards/front-frame", description = "간판 - 전면 프레임 단가 api")
     @ApiOperation(value = "전면 프레임 단가 조회 api",
-            notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S\n" + "- -1은 입력되지 않은 값들입니다.")
+            notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S ]\n" + "- -1은 입력되지 않은 값들입니다.")
     @GetMapping(value="")
     public ResponseEntity<List<StandardCostDto>> getFrontFrame(@RequestParam("materialType") String materialType){
 
@@ -57,9 +57,9 @@ public class FrontFrameController {
 
     @Tag(name = "signboards/front-frame", description = "간판 - 전면 프레임 단가 api")
     @ApiOperation(value = "전면 프레임 단가 수정 api",
-            notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
+            notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S ]")
     @PatchMapping(value="")
-    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<StandardCostRequestDto.StandardCostUpdateRequestDto> req,
+    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<StandardCostRequestDto.Update> req,
                                                             @RequestParam("materialType") String materialType){
 
         List<StandardCostVo> standardCostVos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class FrontFrameController {
 
     @Tag(name = "signboards/front-frame", description = "간판 - 전면 프레임 단가 api")
     @ApiOperation(value = "전면 프레임 단가 삭제 api",
-            notes = "- materialType <-> 알루미늄 : A, 갈바 : G, 스텐 : S")
+            notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S ]")
     @DeleteMapping(value="")
     public ResponseEntity<CommonApiResult> deleteFrontFrame(@RequestBody @Valid DeleteRequestDto req,
                                                             @RequestParam("materialType") String materialType){
