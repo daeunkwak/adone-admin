@@ -109,6 +109,10 @@ public class EstimateResponseDto {
                 }
             }
 
+            // 간판+채널 단가
+            this.signboardPrice = new SignboardPriceResponseDto.SignboardPrice(bidingEstimate);
+            this.channelPrice = new SignboardPriceResponseDto.ChannelPrice(bidingEstimate);
+
             this.constructionCost = bidingEstimate.getConstructionCost();
             this.equipmentCost = bidingEstimate.getEquipmentCost();
             this.authorizationCost = bidingEstimate.getAuthorizationCost();
