@@ -26,8 +26,8 @@ public class SignboardDesignContractor {
 
     // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     // @JoinColumn(name = "biding_estimate_id")
-    @OneToOne(mappedBy = "signboardDesignContractor")
-    private BidingEstimate bidingEstimate;
+//    @OneToOne(mappedBy = "signboardDesignContractor")
+//    private BidingEstimate bidingEstimate;
 
     @Embedded
     private Signboard signboard;
