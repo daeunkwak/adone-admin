@@ -1,6 +1,7 @@
 package app.adoneadmin.controller;
 
 import app.adoneadmin.domain.member.Member;
+import app.adoneadmin.domain.member.constant.MemberRole;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.image.ImageDto;
 import app.adoneadmin.dto.member.request.MemberUpdateRequestDto;
@@ -94,7 +95,8 @@ public class MemberController {
     @GetMapping(value="/search")
     public ResponseEntity<List<MemberResponseDto>> getMemberSearch(@RequestParam("searchWord") String searchWord){
 
-        return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().map(MemberResponseDto::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().filter(
+                member -> member.getMemberRole().equals(MemberRole.CONTRACTOR)).map(MemberResponseDto::from).collect(Collectors.toList()));
     }
 
 
