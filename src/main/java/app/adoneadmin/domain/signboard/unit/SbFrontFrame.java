@@ -1,4 +1,4 @@
-package app.adoneadmin.domain.signboard;
+package app.adoneadmin.domain.signboard.unit;
 
 import lombok.*;
 

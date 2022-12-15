@@ -1,6 +1,5 @@
 package app.adoneadmin.domain.channel.frontlight;
 
-import app.adoneadmin.domain.signboard.SbFrontTruss;
 import app.adoneadmin.vo.channel.FrontLightVo;
 import lombok.*;
 

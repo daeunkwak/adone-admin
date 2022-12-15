@@ -3,7 +3,7 @@ package app.adoneadmin.dto.estimate.response;
 import app.adoneadmin.domain.estimate.BidingEstimate;
 import app.adoneadmin.domain.image.bidingEstimate.PastConstructionImage;
 import app.adoneadmin.dto.image.ImageDto;
-import app.adoneadmin.dto.signboard.response.SignboardPriceResponseDto;
+import app.adoneadmin.dto.signboard.response.SignboardResponseDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,10 +58,10 @@ public class EstimateResponseDto {
     public static class BidingEstimateDetail{
 
         @ApiModelProperty(value = "간판 단가 객체")
-        private SignboardPriceResponseDto.SignboardPrice signboardPrice;
+        private SignboardResponseDto.SignboardPrice signboardPrice;
 
         @ApiModelProperty(value = "채널 단가 객체")
-        private SignboardPriceResponseDto.ChannelPrice channelPrice;
+        private SignboardResponseDto.ChannelPrice channelPrice;
 
         @NotNull
         @ApiModelProperty(value = "시공비")
@@ -110,8 +110,8 @@ public class EstimateResponseDto {
             }
 
             // 간판+채널 단가
-            this.signboardPrice = new SignboardPriceResponseDto.SignboardPrice(bidingEstimate);
-            this.channelPrice = new SignboardPriceResponseDto.ChannelPrice(bidingEstimate);
+            this.signboardPrice = SignboardResponseDto.SignboardPrice.build(bidingEstimate);
+            this.channelPrice = SignboardResponseDto.ChannelPrice.build(bidingEstimate);
 
             this.constructionCost = bidingEstimate.getConstructionCost();
             this.equipmentCost = bidingEstimate.getEquipmentCost();
