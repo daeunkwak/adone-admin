@@ -8,7 +8,9 @@ import app.adoneadmin.domain.member.Member;
 import app.adoneadmin.domain.signboard.SignboardDesignContractor;
 import lombok.*;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,15 +63,15 @@ public class BidingEstimate extends BaseTimeEntity {
 
     private int chColorPrice;
 
-    private int chLightingQuantity;
+    private Integer chLightingQuantity;
 
-    private int chDivisionQuantity;
+    private Integer chDivisionQuantity;
 
-    private int chSizeQuantity;
+    private Integer chSizeQuantity;
 
-    private int chColorQuantity;
+    private Integer chColorQuantity;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "signboard_design_contractor_id")
     private SignboardDesignContractor signboardDesignContractor;
 
