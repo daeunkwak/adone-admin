@@ -61,6 +61,6 @@ public class Typography {
 
     private Integer subTextFont;
 
-    private int textDivision;  // TODO : division type String으로 변경
+    private int textDivision;
 
 }
