@@ -3,6 +3,10 @@ spring:
   config:
     activate:
       on-profile: ["local", "real"]
+  servlet:
+    multipart:
+      max-file-size: 128MB
+      max-request-size: 128MB
 
   datasource:
     url: ${DATABASE_URL}
