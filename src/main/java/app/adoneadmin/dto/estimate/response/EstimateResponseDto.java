@@ -57,6 +57,21 @@ public class EstimateResponseDto {
     @ApiModel(description = "견적 내용 + 단가 객체")
     public static class BidingEstimateDetail{
 
+        @ApiModelProperty(value = "간판 종류", example = "전면간판")
+        private int signboardType;
+
+        @ApiModelProperty(value = "간판 형태", example = "프레임")
+        private int signboardForm;
+
+        @ApiModelProperty(value = "간판 재질", example = "알루미늄")
+        private int materialType;
+
+        @ApiModelProperty(value = "채널 종류", example = "전광채널")
+        private int channelType;
+
+        @ApiModelProperty(value = "채널 재질", example = "알루미늄")
+        private int channelMaterialType;
+
         @ApiModelProperty(value = "간판 단가 객체")
         private SignboardResponseDto.SignboardPrice signboardPrice;
 
@@ -109,9 +124,19 @@ public class EstimateResponseDto {
                 }
             }
 
+
             // 간판+채널 단가
             this.signboardPrice = SignboardResponseDto.SignboardPrice.build(bidingEstimate);
             this.channelPrice = SignboardResponseDto.ChannelPrice.build(bidingEstimate);
+
+            // 간판 정보
+            this.signboardType = bidingEstimate.getSignboardDesignContractor().getSignboard().getSignboardType();
+            this.signboardForm = bidingEstimate.getSignboardDesignContractor().getSignboard().getSignboardForm();
+            this.materialType = bidingEstimate.getSignboardDesignContractor().getSignboard().getMaterialType();
+
+            // 채널 정보
+            this.channelType = bidingEstimate.getSignboardDesignContractor().getSignboard().getChannelType();
+            this.channelMaterialType = bidingEstimate.getSignboardDesignContractor().getSignboard().getChannelMaterialType();
 
             this.constructionCost = bidingEstimate.getConstructionCost();
             this.equipmentCost = bidingEstimate.getEquipmentCost();

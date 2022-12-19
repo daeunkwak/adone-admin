@@ -121,11 +121,11 @@ public class NoticeController {
     @Tag(name = "notification")
     @ApiOperation(value = "공지사항 수정 api")
     @PatchMapping(value = "/update/{noticeId}")
-    public ResponseEntity<CommonApiResult> updateNotice(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+    public ResponseEntity<CommonApiResult> updateNotice(// @ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                         @PathVariable("noticeId") Long noticeId,
                                                         @RequestBody NoticeRequestDto req){
 
-        noticeService.updateNotice(principalDetails.getMember().getMemberId(), noticeId, req.getNoticeContent(), req.getNoticeName());
+        noticeService.updateNotice(noticeId, req.getNoticeContent(), req.getNoticeName());
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항이 업데이트 되었습니다."));
     }
 
@@ -134,11 +134,11 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 첨부파일 수정 api")
     @PostMapping(value = "/file/update/{noticeId}")
     @Deprecated
-    public ResponseEntity<CommonApiResult> updateNoticeFile(@ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
+    public ResponseEntity<CommonApiResult> updateNoticeFile(// @ApiIgnore @AuthenticationPrincipal PrincipalDetails principalDetails,
                                                             @PathVariable("noticeId") Long noticeId,
                                                             @RequestPart(value = "noticeFiles") List<MultipartFile> noticeFiles) throws IOException {
 
-        fileService.updateNoticeFiles(principalDetails.getMember().getMemberId(), noticeFiles, noticeId);
+        fileService.updateNoticeFiles(noticeFiles, noticeId);
         return ResponseEntity.ok(CommonApiResult.createOk("공지사항 첨부파일이 업데이트 되었습니다."));
     }
 

@@ -17,6 +17,10 @@ public class Signboard {
 
     private int materialType;
 
+    private int channelType;
+
+    private int channelMaterialType;
+
     private int lightType;
 
     private int division;
