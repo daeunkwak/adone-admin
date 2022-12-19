@@ -1,15 +1,14 @@
 package app.adoneadmin.service;
 
 import app.adoneadmin.domain.constant.MaterialType;
-import app.adoneadmin.domain.signboard.unit.SbFrontFrame;
-import app.adoneadmin.domain.signboard.unit.SbFrontTruss;
-import app.adoneadmin.domain.signboard.unit.SbHoldingFrame;
-import app.adoneadmin.domain.signboard.unit.SbProtrudingFrame;
+import app.adoneadmin.domain.signboard.unit.*;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.repository.signboard.*;
 import app.adoneadmin.repository.signboard.frontframe.SbFrontFrameRepository;
+import app.adoneadmin.vo.signboard.LaserVo;
+import app.adoneadmin.vo.signboard.PointVo;
 import app.adoneadmin.vo.signboard.StandardCostVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +31,8 @@ public class SignboardService {
     private final SbHoldingFrameRepository sbHoldingFrameRepository;
     private final SbProtrudingFrameRepository sbProtrudingFrameRepository;
     private final SbFrontFrameRepository sbFrontFrameRepository;
+    private final SbLaserRepository sbLaserRepository;
+    private final SbPointRepository sbPointRepository;
     private final ModelMapper modelMapper;
 
 
@@ -376,6 +377,102 @@ public class SignboardService {
         return sbFrontFrameRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchIdException("존재하지 않는 단가 id 입니다.");
         });
+    }
+
+
+    /**
+     * 레이저 타공 단가 추가
+     */
+    public void createLaser(List<LaserVo> laserVos) {
+
+        for (LaserVo vo : laserVos) {
+            SbLaser laser = SbLaser.create(vo.getStandard(), vo.getAluminum(), vo.getGalva(), vo.getStan());
+            sbLaserRepository.save(laser);
+        }
+    }
+
+    /**
+     * 레이저 타공 단가표 조회
+     */
+    public List<LaserVo> getLaser() {
+
+        List<SbLaser> sbLasers = sbLaserRepository.findAll();
+        return sbLasers.stream().map(laser ->
+                modelMapper.map(laser, LaserVo.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * 레이저 타공 단가 수정
+     */
+    public void updateLaser(List<LaserVo> laserVos) {
+
+        for(LaserVo vo : laserVos){
+            SbLaser sbLaser = sbLaserRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
+            sbLaser.setAluminum(vo.getAluminum());
+            sbLaser.setGalva(vo.getGalva());
+            sbLaser.setStan(vo.getStan());
+            sbLaser.setStandard(vo.getStandard());
+            sbLaserRepository.save(sbLaser);
+        }
+    }
+
+    /**
+     * 레이저 타공 단가 삭제
+     */
+    public void deleteLaser(DeleteRequestDto req) {
+
+        for(long id : req.getIdList()){
+            sbLaserRepository.deleteById(id);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가 추가
+     */
+    public void createPoint(List<PointVo> pointVos) {
+
+        for (PointVo vo : pointVos) {
+            SbPoint point = SbPoint.create(vo);
+            sbPointRepository.save(point);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가표 조회
+     */
+    public List<PointVo> getPoint() {
+
+        List<SbPoint> points = sbPointRepository.findAll();
+        return points.stream().map(point ->
+                modelMapper.map(point, PointVo.class)).collect(Collectors.toList());
+    }
+
+
+    /**
+     * 돌출 포인트 단가 수정
+     */
+    public void updatePoint(List<PointVo> pointVos) {
+
+        for(PointVo vo : pointVos){
+            SbPoint sbPoint = sbPointRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
+            sbPoint.setCircle(vo.getCircle());
+            sbPoint.setRotation(vo.getRotation());
+            sbPoint.setRound(vo.getRound());
+            sbPoint.setSquare(vo.getSquare());
+            sbPoint.setStan(vo.getStan());
+            sbPoint.setStandard(vo.getStandard());
+            sbPointRepository.save(sbPoint);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가 삭제
+     */
+    public void deletePoint(DeleteRequestDto req) {
+
+        for(long id : req.getIdList()){
+            sbPointRepository.deleteById(id);
+        }
     }
 
 
