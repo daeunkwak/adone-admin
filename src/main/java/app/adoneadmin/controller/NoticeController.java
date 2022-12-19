@@ -46,6 +46,7 @@ public class NoticeController {
                                                                 @RequestBody @Valid NoticeRequestDto req){
 
         log.info("NoticeCreateRequestDto ::: " + req);
+        log.info("NoticeMember ::: " + principalDetails.getMember().getMemberId());
         Notice notice = noticeService.createNotice(principalDetails.getMember(), req.getNoticeContent(), req.getNoticeName());
         return new ResponseEntity<>(NoticeCreateResponseDto.create(notice.getNoticeId()), HttpStatus.CREATED);
     }
