@@ -45,10 +45,13 @@ public class SignboardController {
         switch (signboardType){
             case 1 :
                 signboardService.createFrontTruss(standardMaterialVoList);
+                break;
             case 2 :
                 signboardService.createProtrudingFrame(standardMaterialVoList);
+                break;
             case 3 :
                 signboardService.createHoldingFrame(standardMaterialVoList);
+                break;
         }
 
         return ResponseEntity.ok(CommonApiResult.createOk("항목이 정상적으로 추가되었습니다."));
@@ -95,10 +98,13 @@ public class SignboardController {
         switch (signboardType){
             case 1 :
                 signboardService.updateFrontTruss(standardMaterialVoList);
+                break;
             case 2 :
                 signboardService.updateProtrudingFrame(standardMaterialVoList);
+                break;
             case 3 :
                 signboardService.updateHoldingFrame(standardMaterialVoList);
+                break;
         }
 
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 수정되었습니다."));
@@ -117,15 +123,15 @@ public class SignboardController {
             case 1 :
                 for(long id : req.getIdList()) {
                     signboardService.deleteFrontTruss(id);
-                }
+                } break;
             case 2 :
                 for(long id : req.getIdList()) {
                     signboardService.deleteProtrudingFrame(id);
-                }
+                } break;
             case 3 :
                 for(long id : req.getIdList()) {
                     signboardService.deleteHoldingFrame(id);
-                }
+                } break;
         }
 
         return ResponseEntity.ok(CommonApiResult.OK("항목이 정상적으로 삭제되었습니다."));
