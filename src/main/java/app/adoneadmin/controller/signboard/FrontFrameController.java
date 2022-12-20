@@ -59,7 +59,7 @@ public class FrontFrameController {
     @ApiOperation(value = "전면 프레임 단가 수정 api",
             notes = "- materialType [ 알루미늄:A, 갈바:G, 스텐:S ]")
     @PatchMapping(value="")
-    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<StandardCostRequestDto.Update> req,
+    public ResponseEntity<CommonApiResult> updateFrontFrame(@RequestBody @Valid List<StandardCostRequestDto.UpdateStandardCost> req,
                                                             @RequestParam("materialType") String materialType){
 
         List<StandardCostVo> standardCostVos = req.stream().map(dto -> modelMapper.map(dto, StandardCostVo.class)).collect(Collectors.toList());

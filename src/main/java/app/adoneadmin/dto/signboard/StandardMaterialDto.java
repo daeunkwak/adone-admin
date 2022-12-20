@@ -17,7 +17,7 @@ public class StandardMaterialDto {
     private long id;
 
     @ApiModelProperty(value = "규격")
-    private int standard;
+    private String standard;
 
     @ApiModelProperty(value = "알루미늄 단가")
     private int aluminum;

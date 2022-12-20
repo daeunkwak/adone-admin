@@ -20,7 +20,7 @@ public class SbFrontTruss {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int standard;
+    private String standard;
 
     private int aluminum;
 
@@ -29,7 +29,7 @@ public class SbFrontTruss {
     private int stan;
 
 
-    public static SbFrontTruss create(int standard, int aluminum, int galva, int stan){
+    public static SbFrontTruss create(String standard, int aluminum, int galva, int stan){
 
         return SbFrontTruss.builder()
                 .standard(standard)

@@ -292,7 +292,7 @@ public class SignboardService {
                         frame.updateStan(vo.getCost());
                     }else{
                         frame.updateStan(-1);
-                        SbFrontFrame stan = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
+                        SbFrontFrame stan = SbFrontFrame.createStan(vo.getStandard(), vo.getCost());
                         sbFrontFrameRepository.save(stan);
 
                         if(noneCheck(frame)){

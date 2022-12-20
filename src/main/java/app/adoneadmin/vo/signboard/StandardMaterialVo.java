@@ -9,7 +9,7 @@ public class StandardMaterialVo {
 
     private long id;
 
-    private int standard;
+    private String standard;
 
     private int aluminum;
 

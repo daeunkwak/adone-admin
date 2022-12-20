@@ -20,7 +20,7 @@ public class SbProtrudingFrame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int standard;
+    private String standard;
 
     private int aluminum;
 
@@ -29,7 +29,7 @@ public class SbProtrudingFrame {
     private int stan;
 
 
-    public static SbProtrudingFrame create(int standard, int aluminum, int galva, int stan){
+    public static SbProtrudingFrame create(String standard, int aluminum, int galva, int stan){
 
         return SbProtrudingFrame.builder()
                 .standard(standard)

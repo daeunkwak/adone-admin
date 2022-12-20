@@ -22,7 +22,7 @@ public class StandardCostRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @ApiModel(description = "전면간판 단가 항목 수정 요청 객체")
-    public static class Update extends StandardCostRequestDto {
+    public static class UpdateStandardCost extends StandardCostRequestDto {
 
         @ApiModelProperty(value = "단가 id", example = "1")
         private long id;
