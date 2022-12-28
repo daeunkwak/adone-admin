@@ -1,7 +1,7 @@
 package app.adoneadmin.controller.channel;
 
 import app.adoneadmin.domain.constant.MaterialType;
-import app.adoneadmin.dto.channel.BackLightDto;
+import app.adoneadmin.dto.channel.response.BackLightDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;

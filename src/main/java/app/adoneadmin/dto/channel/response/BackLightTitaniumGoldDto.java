@@ -1,4 +1,4 @@
-package app.adoneadmin.dto.channel;
+package app.adoneadmin.dto.channel.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

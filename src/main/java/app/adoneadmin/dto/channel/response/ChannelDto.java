@@ -1,10 +1,8 @@
-package app.adoneadmin.dto.channel;
+package app.adoneadmin.dto.channel.response;
 
-import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

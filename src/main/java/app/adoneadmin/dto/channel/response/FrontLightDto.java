@@ -1,6 +1,5 @@
-package app.adoneadmin.dto.channel;
+package app.adoneadmin.dto.channel.response;
 
-import app.adoneadmin.vo.channel.FrontLightVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,17 +24,6 @@ public class FrontLightDto {
     @ApiModelProperty(value = "LED", example = "77")
     private int led;
 
-//    private int depth80;
-//
-//    private int depth100;
-//
-//    private int depth35;
-//
-//    private int depth60;
-//
-//    private int depth50;
-//
-//    private int depth120;
 
     @Data
     @AllArgsConstructor

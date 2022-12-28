@@ -1,7 +1,7 @@
 package app.adoneadmin.controller.channel;
 
 import app.adoneadmin.domain.constant.MaterialType;
-import app.adoneadmin.dto.channel.FrontLightDto;
+import app.adoneadmin.dto.channel.response.FrontLightDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;

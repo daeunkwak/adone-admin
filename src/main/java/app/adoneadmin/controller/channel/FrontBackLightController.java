@@ -1,6 +1,6 @@
 package app.adoneadmin.controller.channel;
 
-import app.adoneadmin.dto.channel.ChannelDto;
+import app.adoneadmin.dto.channel.response.ChannelDto;
 import app.adoneadmin.dto.channel.request.ChannelRequestDto;
 import app.adoneadmin.dto.channel.request.ChannelUpdateRequestDto;
 import app.adoneadmin.dto.common.CommonApiResult;

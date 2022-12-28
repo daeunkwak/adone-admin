@@ -1,4 +1,4 @@
-package app.adoneadmin.dto.channel;
+package app.adoneadmin.dto.channel.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.annotation.Nullable;
 
 @Data
 @AllArgsConstructor
