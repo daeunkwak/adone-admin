@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StandardMaterialVo {
+public class LaserVo {
 
     private long id;
 

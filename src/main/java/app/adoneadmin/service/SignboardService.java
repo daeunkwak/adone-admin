@@ -1,12 +1,14 @@
 package app.adoneadmin.service;
 
-import app.adoneadmin.domain.signboard.*;
 import app.adoneadmin.domain.constant.MaterialType;
+import app.adoneadmin.domain.signboard.unit.*;
 import app.adoneadmin.dto.common.DeleteRequestDto;
 import app.adoneadmin.global.exception.handler.CustomException;
 import app.adoneadmin.global.exception.handler.NoSuchIdException;
 import app.adoneadmin.repository.signboard.*;
 import app.adoneadmin.repository.signboard.frontframe.SbFrontFrameRepository;
+import app.adoneadmin.vo.signboard.LaserVo;
+import app.adoneadmin.vo.signboard.PointVo;
 import app.adoneadmin.vo.signboard.StandardCostVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ public class SignboardService {
     private final SbHoldingFrameRepository sbHoldingFrameRepository;
     private final SbProtrudingFrameRepository sbProtrudingFrameRepository;
     private final SbFrontFrameRepository sbFrontFrameRepository;
+    private final SbLaserRepository sbLaserRepository;
+    private final SbPointRepository sbPointRepository;
     private final ModelMapper modelMapper;
 
 
@@ -205,10 +209,10 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbFrontTruss sbFrontTruss = sbFrontTrussRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-           // sbFrontTruss.setStandard(vo.getStandard());
             sbFrontTruss.setAluminum(vo.getAluminum());
             sbFrontTruss.setGalva(vo.getGalva());
             sbFrontTruss.setStan(vo.getStan());
+            sbFrontTruss.setStandard(vo.getStandard());
             sbFrontTrussRepository.save(sbFrontTruss);
         }
     }
@@ -220,7 +224,7 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbProtrudingFrame sbProtrudingFrame = sbProtrudingFrameRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-           // sbProtrudingFrame.setStandard(vo.getStandard());
+            sbProtrudingFrame.setStandard(vo.getStandard());
             sbProtrudingFrame.setAluminum(vo.getAluminum());
             sbProtrudingFrame.setGalva(vo.getGalva());
             sbProtrudingFrame.setStan(vo.getStan());
@@ -235,7 +239,7 @@ public class SignboardService {
 
         for(StandardMaterialVo vo : standardMaterialVoList){
             SbHoldingFrame sbHoldingFrame = sbHoldingFrameRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
-            //sbHoldingFrame.setStandard(vo.getStandard());
+            sbHoldingFrame.setStandard(vo.getStandard());
             sbHoldingFrame.setAluminum(vo.getAluminum());
             sbHoldingFrame.setGalva(vo.getGalva());
             sbHoldingFrame.setStan(vo.getStan());
@@ -251,23 +255,55 @@ public class SignboardService {
         switch (MaterialType.of(materialType)){
             case ALUMINUM:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateAlu(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){     // standard를 수정하지 않는 경우 -> 해당 materialType 값만 업데이트
+                        frame.updateAlu(vo.getCost());
+                    }else{
+                        frame.updateAlu(-1);
+                        SbFrontFrame alu = SbFrontFrame.createAlu(vo.getStandard(), vo.getCost());      // standard를 수정하는 경우 -> 새로운 레코드 생성
+                        sbFrontFrameRepository.save(alu);
+
+                        if(noneCheck(frame)){       // 해당 standard에 아무 값도 남아있지 않는 경우 -> 레코드 삭제
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
 
             case GALVA:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateGalva(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){
+                        frame.updateGalva(vo.getCost());
+                    }else{
+                        frame.updateGalva(-1);
+                        SbFrontFrame galva = SbFrontFrame.createGalva(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(galva);
+
+                        if(noneCheck(frame)){
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
 
             case STAN:
                 for(StandardCostVo vo : standardCostVos){
-                    findSbFrontFrameOrThrow(vo.getId()).updateStan(vo.getCost());
-                }
-                break;
+                    SbFrontFrame frame = findSbFrontFrameOrThrow(vo.getId());
+                    if(findSbFrontFrameOrThrow(vo.getId()).getStandard().equals(vo.getStandard())){
+                        frame.updateStan(vo.getCost());
+                    }else{
+                        frame.updateStan(-1);
+                        SbFrontFrame stan = SbFrontFrame.createStan(vo.getStandard(), vo.getCost());
+                        sbFrontFrameRepository.save(stan);
+
+                        if(noneCheck(frame)){
+                            sbFrontFrameRepository.deleteById(frame.getId());
+                        }
+                    }
+                } break;
         }
+
     }
+
 
     /**
      * 전면 트러스 단가 삭제
@@ -303,20 +339,37 @@ public class SignboardService {
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateAlu(-1);
+
+                    if(noneCheck(sbFrontFrame)){       // 해당 standard에 아무 값도 남아있지 않는 경우 -> 레코드 삭제
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
 
             case GALVA:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateGalva(-1);
+
+                    if(noneCheck(sbFrontFrame)){
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
 
             case STAN:
                 for(long id : req.getIdList()){
                     SbFrontFrame sbFrontFrame = findSbFrontFrameOrThrow(id);
                     sbFrontFrame.updateStan(-1);
+
+                    if(noneCheck(sbFrontFrame)){
+                        sbFrontFrameRepository.deleteById(sbFrontFrame.getId());
+                    }
                 } break;
         }
+    }
+
+
+    private boolean noneCheck(SbFrontFrame frame){
+        return frame.getGalva() == -1 && frame.getAlu() == -1 && frame.getStan() == -1;
     }
 
 
@@ -324,6 +377,102 @@ public class SignboardService {
         return sbFrontFrameRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchIdException("존재하지 않는 단가 id 입니다.");
         });
+    }
+
+
+    /**
+     * 레이저 타공 단가 추가
+     */
+    public void createLaser(List<LaserVo> laserVos) {
+
+        for (LaserVo vo : laserVos) {
+            SbLaser laser = SbLaser.create(vo.getStandard(), vo.getAluminum(), vo.getGalva(), vo.getStan());
+            sbLaserRepository.save(laser);
+        }
+    }
+
+    /**
+     * 레이저 타공 단가표 조회
+     */
+    public List<LaserVo> getLaser() {
+
+        List<SbLaser> sbLasers = sbLaserRepository.findAll();
+        return sbLasers.stream().map(laser ->
+                modelMapper.map(laser, LaserVo.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * 레이저 타공 단가 수정
+     */
+    public void updateLaser(List<LaserVo> laserVos) {
+
+        for(LaserVo vo : laserVos){
+            SbLaser sbLaser = sbLaserRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
+            sbLaser.setAluminum(vo.getAluminum());
+            sbLaser.setGalva(vo.getGalva());
+            sbLaser.setStan(vo.getStan());
+            sbLaser.setStandard(vo.getStandard());
+            sbLaserRepository.save(sbLaser);
+        }
+    }
+
+    /**
+     * 레이저 타공 단가 삭제
+     */
+    public void deleteLaser(DeleteRequestDto req) {
+
+        for(long id : req.getIdList()){
+            sbLaserRepository.deleteById(id);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가 추가
+     */
+    public void createPoint(List<PointVo> pointVos) {
+
+        for (PointVo vo : pointVos) {
+            SbPoint point = SbPoint.create(vo);
+            sbPointRepository.save(point);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가표 조회
+     */
+    public List<PointVo> getPoint() {
+
+        List<SbPoint> points = sbPointRepository.findAll();
+        return points.stream().map(point ->
+                modelMapper.map(point, PointVo.class)).collect(Collectors.toList());
+    }
+
+
+    /**
+     * 돌출 포인트 단가 수정
+     */
+    public void updatePoint(List<PointVo> pointVos) {
+
+        for(PointVo vo : pointVos){
+            SbPoint sbPoint = sbPointRepository.findById(vo.getId()).orElseThrow(() -> new NoSuchIdException("존재하지 않는 단가 id 입니다."));
+            sbPoint.setCircle(vo.getCircle());
+            sbPoint.setRotation(vo.getRotation());
+            sbPoint.setRound(vo.getRound());
+            sbPoint.setSquare(vo.getSquare());
+            sbPoint.setStan(vo.getStan());
+            sbPoint.setStandard(vo.getStandard());
+            sbPointRepository.save(sbPoint);
+        }
+    }
+
+    /**
+     * 돌출 포인트 단가 삭제
+     */
+    public void deletePoint(DeleteRequestDto req) {
+
+        for(long id : req.getIdList()){
+            sbPointRepository.deleteById(id);
+        }
     }
 
 

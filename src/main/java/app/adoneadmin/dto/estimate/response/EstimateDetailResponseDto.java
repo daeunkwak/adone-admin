@@ -25,6 +25,12 @@ public class EstimateDetailResponseDto {
 
     // TODO : refactor
 
+    @ApiModelProperty(value = "견적 id", example = "1")
+    private long bidingEstimateId;
+
+    @ApiModelProperty(value = "견적 번호", example = "202212190001")
+    private long bidingEstimateNum;
+
     // 수요자
     private UserInfo userInfo;
 
@@ -38,6 +44,9 @@ public class EstimateDetailResponseDto {
     private RequestEstimateInfo requestEstimateInfo;
 
     public EstimateDetailResponseDto(BidingEstimate bidingEstimate){
+
+        this.bidingEstimateId = bidingEstimate.getBidingEstimateId();
+        this.bidingEstimateNum = bidingEstimate.getBidingEstimateNum();
 
         this.userInfo  = new UserInfo(bidingEstimate.getRequestEstimate().getMember());
         userInfo.setRegDateTime(bidingEstimate.getRequestEstimate().getRegDateTime());

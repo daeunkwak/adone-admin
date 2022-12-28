@@ -1,6 +1,7 @@
 package app.adoneadmin.controller;
 
 import app.adoneadmin.domain.member.Member;
+import app.adoneadmin.domain.member.constant.MemberRole;
 import app.adoneadmin.dto.common.CommonApiResult;
 import app.adoneadmin.dto.image.ImageDto;
 import app.adoneadmin.dto.member.request.MemberUpdateRequestDto;
@@ -46,6 +47,15 @@ public class MemberController {
 
 
     @Tag(name = "members")
+    @ApiOperation(value = "미승인 회원 리스트 조회 api")
+    @GetMapping(value="/unauthorized")
+    public ResponseEntity<List<MemberResponseDto>> getUnAuthorizedMemberList(){
+
+        return ResponseEntity.ok(memberService.getUnAuthorizedMemberList().stream().map(MemberResponseDto::from).collect(Collectors.toList()));
+    }
+
+
+    @Tag(name = "members")
     @ApiOperation(value = "시공사 회원 상세 조회 api")
     @GetMapping(value="/{memberId}")
     public ResponseEntity<MemberDetailResponseDto> getMemberList(@PathVariable("memberId") Long memberId){
@@ -85,7 +95,8 @@ public class MemberController {
     @GetMapping(value="/search")
     public ResponseEntity<List<MemberResponseDto>> getMemberSearch(@RequestParam("searchWord") String searchWord){
 
-        return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().map(MemberResponseDto::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(memberService.getMemberSearch(searchWord).stream().filter(
+                member -> member.getMemberRole().equals(MemberRole.CONTRACTOR)).map(MemberResponseDto::from).collect(Collectors.toList()));
     }
 
 

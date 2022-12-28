@@ -5,9 +5,12 @@ import app.adoneadmin.domain.estimate.constant.BidingState;
 import app.adoneadmin.domain.estimate.requestEstimate.RequestEstimate;
 import app.adoneadmin.domain.image.bidingEstimate.PastConstructionImage;
 import app.adoneadmin.domain.member.Member;
+import app.adoneadmin.domain.signboard.SignboardDesignContractor;
 import lombok.*;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,8 @@ public class BidingEstimate extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bidingEstimateId;
+
+    private Long bidingEstimateNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -59,6 +64,18 @@ public class BidingEstimate extends BaseTimeEntity {
     private int chSizePrice;
 
     private int chColorPrice;
+
+    private Integer chLightingQuantity;
+
+    private Integer chDivisionQuantity;
+
+    private Integer chSizeQuantity;
+
+    private Integer chColorQuantity;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "signboard_design_contractor_id")
+    private SignboardDesignContractor signboardDesignContractor;
 
     @Column(nullable = false)
     private String warrantyPeriod;  // 보증기간

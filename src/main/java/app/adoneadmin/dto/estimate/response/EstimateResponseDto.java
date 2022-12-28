@@ -3,7 +3,7 @@ package app.adoneadmin.dto.estimate.response;
 import app.adoneadmin.domain.estimate.BidingEstimate;
 import app.adoneadmin.domain.image.bidingEstimate.PastConstructionImage;
 import app.adoneadmin.dto.image.ImageDto;
-import app.adoneadmin.dto.signboard.response.SignboardPriceResponseDto;
+import app.adoneadmin.dto.signboard.response.SignboardResponseDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -57,11 +57,26 @@ public class EstimateResponseDto {
     @ApiModel(description = "견적 내용 + 단가 객체")
     public static class BidingEstimateDetail{
 
+        @ApiModelProperty(value = "간판 종류", example = "전면간판")
+        private int signboardType;
+
+        @ApiModelProperty(value = "간판 형태", example = "프레임")
+        private int signboardForm;
+
+        @ApiModelProperty(value = "간판 재질", example = "알루미늄")
+        private int materialType;
+
+        @ApiModelProperty(value = "채널 종류", example = "전광채널")
+        private int channelType;
+
+        @ApiModelProperty(value = "채널 재질", example = "알루미늄")
+        private int channelMaterialType;
+
         @ApiModelProperty(value = "간판 단가 객체")
-        private SignboardPriceResponseDto.SignboardPrice signboardPrice;
+        private SignboardResponseDto.SignboardPrice signboardPrice;
 
         @ApiModelProperty(value = "채널 단가 객체")
-        private SignboardPriceResponseDto.ChannelPrice channelPrice;
+        private SignboardResponseDto.ChannelPrice channelPrice;
 
         @NotNull
         @ApiModelProperty(value = "시공비")
@@ -108,6 +123,20 @@ public class EstimateResponseDto {
                     pastConstructionImageDtoList.add(new ImageDto(image.getImageId(), image.getImageUrl()));
                 }
             }
+
+
+            // 간판+채널 단가
+            this.signboardPrice = SignboardResponseDto.SignboardPrice.build(bidingEstimate);
+            this.channelPrice = SignboardResponseDto.ChannelPrice.build(bidingEstimate);
+
+            // 간판 정보
+            this.signboardType = bidingEstimate.getSignboardDesignContractor().getSignboard().getSignboardType();
+            this.signboardForm = bidingEstimate.getSignboardDesignContractor().getSignboard().getSignboardForm();
+            this.materialType = bidingEstimate.getSignboardDesignContractor().getSignboard().getMaterialType();
+
+            // 채널 정보
+            this.channelType = bidingEstimate.getSignboardDesignContractor().getSignboard().getChannelType();
+            this.channelMaterialType = bidingEstimate.getSignboardDesignContractor().getSignboard().getChannelMaterialType();
 
             this.constructionCost = bidingEstimate.getConstructionCost();
             this.equipmentCost = bidingEstimate.getEquipmentCost();

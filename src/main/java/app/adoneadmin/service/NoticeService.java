@@ -34,6 +34,8 @@ public class NoticeService {
      */
     public Notice createNotice(Member member, String noticeContent, String noticeName) {
 
+        log.info("noticeService.createNotice !!!! " + member.getMemberId() + " " + noticeContent  + " " + noticeName);
+
         Notice notice = Notice.create(member, noticeName, noticeContent);
         return noticeRepository.save(notice);
     }
@@ -78,13 +80,13 @@ public class NoticeService {
     /**
      * 공지사항 수정
      */
-    public Notice updateNotice(Long memberId, Long noticeId, String noticeContent, String noticeName) {
+    public Notice updateNotice(Long noticeId, String noticeContent, String noticeName) {
 
         Notice notice = findNoticeOrThrow(noticeId);
 
-        if(notice.getMember().getMemberId() != memberId){
-            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
-        }
+//        if(notice.getMember().getMemberId() != memberId){
+//            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
+//        }
 
         notice.updateNoticeName(noticeName);
         notice.updateNoticeContent(noticeContent);

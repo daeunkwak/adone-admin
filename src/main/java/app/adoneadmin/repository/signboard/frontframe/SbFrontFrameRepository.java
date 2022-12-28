@@ -1,6 +1,6 @@
 package app.adoneadmin.repository.signboard.frontframe;
 
-import app.adoneadmin.domain.signboard.SbFrontFrame;
+import app.adoneadmin.domain.signboard.unit.SbFrontFrame;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

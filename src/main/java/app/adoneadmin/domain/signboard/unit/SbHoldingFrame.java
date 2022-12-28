@@ -1,4 +1,4 @@
-package app.adoneadmin.domain.signboard;
+package app.adoneadmin.domain.signboard.unit;
 
 import lombok.*;
 
@@ -14,13 +14,13 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class SbProtrudingFrame {
+public class SbHoldingFrame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int standard;
+    private String standard;
 
     private int aluminum;
 
@@ -29,9 +29,9 @@ public class SbProtrudingFrame {
     private int stan;
 
 
-    public static SbProtrudingFrame create(int standard, int aluminum, int galva, int stan){
+    public static SbHoldingFrame create(String standard, int aluminum, int galva, int stan){
 
-        return SbProtrudingFrame.builder()
+        return SbHoldingFrame.builder()
                 .standard(standard)
                 .aluminum(aluminum)
                 .galva(galva)

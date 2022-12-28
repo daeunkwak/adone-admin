@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,18 @@ public class MemberService {
 
         return memberRepository.findAll().stream().filter(
                 member -> member.getMemberRole().equals(MemberRole.CONTRACTOR)).collect(Collectors.toList());
+    }
+
+
+
+    /**
+     * 미승인 시공사 회원 리스트 조회
+     */
+    public List<Member> getUnAuthorizedMemberList() {
+
+        return memberRepository.findAll().stream().filter(
+                member -> member.getMemberRole().equals(MemberRole.CONTRACTOR) && !member.getIsAuthorized()
+        ).collect(Collectors.toList());
     }
 
 

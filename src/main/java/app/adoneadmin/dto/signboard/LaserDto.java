@@ -1,17 +1,21 @@
 package app.adoneadmin.dto.signboard;
 
+
+import app.adoneadmin.vo.signboard.LaserVo;
 import app.adoneadmin.vo.signboard.StandardMaterialVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-@ApiModel(description = "규격/재질에 따른 단가 테이블 조회, 수정 객체")
-public class StandardMaterialDto {
+@AllArgsConstructor
+@ApiModel(description = "레이저 타공 단가 반환 객체")
+public class LaserDto {
+
+    // TODO : StandardMaterialDto와 같이 refactor
 
     @ApiModelProperty(value = "단가 id")
     private long id;
@@ -29,13 +33,13 @@ public class StandardMaterialDto {
     private int stan;
 
 
-    public StandardMaterialDto(StandardMaterialVo standardMaterialVo){
+    public LaserDto(LaserVo laserVo){
 
-        this.id = standardMaterialVo.getId();
-        this.standard = standardMaterialVo.getStandard();
-        this.aluminum = standardMaterialVo.getAluminum();
-        this.galva = standardMaterialVo.getGalva();
-        this.stan = standardMaterialVo.getStan();
+        this.id = laserVo.getId();
+        this.standard = laserVo.getStandard();
+        this.aluminum = laserVo.getAluminum();
+        this.galva = laserVo.getGalva();
+        this.stan = laserVo.getStan();
     }
 
 }

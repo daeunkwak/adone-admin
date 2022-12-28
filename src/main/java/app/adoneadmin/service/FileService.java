@@ -58,12 +58,12 @@ public class FileService {
     /**
      * 공지사항 첨부파일 리스트 업데이트
      */
-    public List<NoticeFile> updateNoticeFiles(long memberId, List<MultipartFile> noticeFiles, long noticeId) throws IOException {
+    public List<NoticeFile> updateNoticeFiles(List<MultipartFile> noticeFiles, long noticeId) throws IOException {
 
         Notice notice = findNoticeOrThrow(noticeId);
-        if(notice.getMember().getMemberId() != memberId){
-            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
-        }
+//        if(notice.getMember().getMemberId() != memberId){
+//            throw new CustomException("공지사항을 수정할 권한이 없습니다.");
+//        }
 
         List<Long> fileIdList = noticeFileRepository.findByNoticeId(notice.getNoticeId());
         if(!fileIdList.isEmpty()){
